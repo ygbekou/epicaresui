@@ -1,0 +1,76 @@
+<app-header-image *ngIf="settings.header == 'image'" [backgroundImage]="'assets/images/others/homepage.jpg'"
+    [bgImageAnimate]="true" [contentOffsetToTop]="true" [title]="appService.company.name"
+    [desc]="appService.company.bannerContentHeader" [isHomePage]="true">
+</app-header-image>
+
+<app-header-video *ngIf="settings.header == 'video'" [backgroundImage]="'assets/images/others/homepage.jpg'"
+    [bgImageAnimate]="true" [contentOffsetToTop]="true" [title]=""
+    [desc]="'Communication - Strategies - Formations'" [isHomePage]="true">
+</app-header-video>
+
+<app-header-carousel *ngIf="settings.header == 'carousel'" [slides]="slides" [contentOffsetToTop]="true">
+</app-header-carousel>
+
+
+<div class="px-3" *ngIf="appService.company.displayFeatured">
+    <div class="theme-container">
+        <mat-card class="main-content-header">
+            <app-blog-carousel [properties]="featuredBlogs"></app-blog-carousel>
+        </mat-card>
+    </div>
+</div>
+
+<br/>
+
+<div class="px-3">
+    <div class="theme-container">
+        <div class="get-in-touch bg-primary" ngClass.lt-md="mt-3">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="content" ngClass.xs="p-0">
+                <div fxLayout="column" class="p-3">
+                    <p class="mb-0"> </p>
+                </div>
+                <div fxLayout="column" class="p-3">
+                    <h2>{{appService.company.bannerContentParagraph}}</h2>
+                </div>
+                <div fxLayout="column" class="p-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mission *ngIf="appService.company.displayMission"></app-mission>
+
+<div class="px-3">
+    <div class="theme-container">
+        <div class="get-in-touch bg-primary" ngClass.lt-md="mt-3">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="content" ngClass.xs="p-0">
+                <div fxLayout="column" class="p-3">
+                    <p class="mb-0"> </p>
+                </div>
+                <div fxLayout="column" class="p-3">
+                    <h2>{{appService.company.footerParagraph2}}</h2>
+                </div>
+                <div fxLayout="column" class="p-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-polls *ngIf="appService.company.displayPolls" [fromPage]="'HomePage'"></app-polls>
+<app-our-services *ngIf="appService.company.displayServices"></app-our-services>
+<app-our-expertise *ngIf="appService.company.displayExpertise"></app-our-expertise>
+<app-testimonials *ngIf="appService.company.displayTestimonial"></app-testimonials>
+<app-our-leadership *ngIf="appService.company.displayTeams" [fromPage]="'HomePage'"></app-our-leadership>
+<app-clients *ngIf="appService.company.displayClientLogos"></app-clients>
+<app-projects *ngIf="appService.company.displayProjects" [fromPage]="'HomePage'"></app-projects>
+
+<div class="section mt-3" *ngIf="appService.company.displayFeaturedBlogs && featuredBlogs.length>0">
+    <div class="px-3">
+        <div class="theme-container">
+            <h1 class="section-title">{{ 'COMMON.FEATURED_BLOGS' | translate }}</h1>
+            <app-featured-blog-carousel [blogs]="featuredBlogs"></app-featured-blog-carousel>
+        </div>
+    </div>
+</div>
+
+<app-get-in-touch></app-get-in-touch>

@@ -1,0 +1,314 @@
+<!-- <div class="p-3">
+  <div class="theme-container">
+
+    <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+      <mat-card ngClass.lt-lg="p-0" *ngIf="!done&&!tokenStorage.hasToken()">
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+            <h1>{{'COMMON.CONNECT_TO_SUBMIT' | translate }}</h1>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+            <div fxLayout="column" fxLayoutAlign="center center" class="text-center">
+              <a mat-raised-button [routerLink]="['/login', '1']" color="accent" class="w-100">
+                {{'COMMON.SIGN_IN' | translate }}</a>
+            </div>
+          </div>
+
+          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+            <div fxLayout="column" fxLayoutAlign="center center" class="text-center">
+              <a mat-raised-button [routerLink]="['/register', '1']" color="accent"
+                class="w-100">{{'COMMON.NEW_REGISTER' | translate }}</a>
+            </div>
+          </div>
+        </div>
+
+      </mat-card>
+
+      <mat-card ngClass.lt-lg="p-0" *ngIf="done&&tokenStorage.hasToken()">
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+            <h2 style="color: green;">{{'MESSAGE.PROJECT_SUBMITTED' | translate }}</h2>
+            <br/>
+            <a mat-button [routerLink]="['/account/project-list']" color="primary"
+                        class="w-100">{{'MESSAGE.CONNECT_EDIT_PROJECT' | translate }}</a>
+          </div> 
+        </div>
+      </mat-card>
+
+      <mat-card ngClass.lt-lg="p-0" *ngIf="!done&&tokenStorage.hasToken()">
+          <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="100" class="h-100 w-100 text-right">
+            <button type="submit" mat-raised-button color="primary">
+              <span>{{horizontalStepper.selectedIndex < 5?('COMMON.NEXT'|translate):('COMMON.SUBMIT_PROJECT'|translate)}}</span>
+              <span class="material-icons">
+                navigate_next
+              </span>
+            </button>
+          </div>
+        </div> 
+        <mat-horizontal-stepper #horizontalStepper linear="true" class="submit-project"
+          (selectionChange)="onSelectionChange($event)">
+          <mat-step label="Presentation">
+            <div class="step-content">
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label> {{'COMMON.TITLE' | translate}}
+                    </mat-label>
+                    <input matInput type="text" class="form-control" id="title" [(ngModel)]="project.title" name="title"
+                      #title="ngModel" required>
+                    <mat-error *ngIf="f.submitted && title.invalid" severity="error">
+                      {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label> {{'COMMON.PROJECT_LOCATION' | translate}}
+                    </mat-label>
+                    <input matInput type="text" class="form-control" id="location" [(ngModel)]="project.location"
+                      name="location" #location="ngModel" required>
+                    <mat-error *ngIf="f.submitted && title.invalid" severity="error">
+                      {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label> {{'COMMON.BUDGET' | translate}}
+                    </mat-label>
+                    <input matInput type="text" class="form-control" id="budget" [(ngModel)]="project.budget"
+                      name="budget" #budget="ngModel" required>
+                    <mat-error *ngIf="f.submitted && budget.invalid" severity="error">
+                      {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label> {{'COMMON.PROJECT_DURATION' | translate}}
+                    </mat-label>
+                    <input matInput type="text" class="form-control" id="duration" [(ngModel)]="project.duration"
+                      name="duration" #duration="ngModel">                 
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field class="w-100">
+                    <mat-label> {{'COMMON.PROJECTED_START_DATE' | translate}}</mat-label><br />
+                    <input matInput [matDatepicker]="projectedStartDatePicker" class="form-control"
+                      id="projectedStartDate" [(ngModel)]="project.projectedStartDate" name="projectedStartDate"
+                      #projectedStartDate="ngModel">
+                    <mat-datepicker-toggle matSuffix [for]="projectedStartDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #projectedStartDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-sm="33" class="p-3">
+                  <mat-form-field class="w-100">
+                    <mat-label> {{'COMMON.PROJECTED_END_DATE' | translate}}</mat-label><br />
+                    <input matInput [matDatepicker]="projectedEndDatePicker" class="form-control" id="projectedEndDate"
+                      [(ngModel)]="project.projectedEndDate" name="projectedEndDate" #projectedEndDate="ngModel">
+                    <mat-datepicker-toggle matSuffix [for]="projectedEndDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #projectedEndDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_DESCRIPTION' | translate}} <font color="red">*</font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="description" [(ngModel)]="project.description"
+                    name="description" #description="ngModel" required></quill-editor>
+                  <mat-error *ngIf="f.submitted && description.invalid" severity="error">
+                    {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                  </mat-error>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_OBJECTIVE' | translate}}<font color="red">*
+                    </font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="description" [(ngModel)]="project.objectif" name="objectif"
+                    #objectif="ngModel" required></quill-editor>
+                  <mat-error *ngIf="f.submitted && objectif.invalid" severity="error">
+                    {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                  </mat-error>
+                </div>
+              </div>
+
+            </div>
+          </mat-step>
+
+          <mat-step label="Innovation">
+            <div class="step-content">
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_INOV' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="inovation" [(ngModel)]="project.inovation" name="inovation"
+                    #inovation="ngModel"></quill-editor>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_EXISTANT' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="existant" [(ngModel)]="project.existant" name="existant"
+                    #existant="ngModel"></quill-editor>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+
+
+        <mat-step label="{{'COMMON.SWAT'|translate}}">
+            <div class="step-content">
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_RESOURCE' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="resource" [(ngModel)]="project.resource" name="resource"
+                    #resource="ngModel"></quill-editor>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_RISK' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="constraints" [(ngModel)]="project.constraints"
+                    name="constraints" #constraints="ngModel"></quill-editor>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+
+        <mat-step label="{{'COMMON.RESULT_BUDGET'|translate}}">
+            <div class="step-content">
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_BUDGET' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="budgetLine" [(ngModel)]="project.budgetLine" name="budgetLine"
+                    #budgetLine="ngModel"></quill-editor>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_RESULT' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="result" [(ngModel)]="project.result" name="result"
+                    #result="ngModel"></quill-editor>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+
+        <mat-step label="{{'COMMON.EXEC_FEASIBILITY'|translate}}">
+            <div class="step-content">
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_FEASIBILITY' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="feasibility" [(ngModel)]="project.feasibility"
+                    name="feasibility" #feasibility="ngModel"></quill-editor>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <mat-label> {{'MESSAGE.PROJECT_EXECUTION' | translate}}
+                    <font color="red"><strong>*</strong></font>
+                  </mat-label>
+                  <quill-editor class="form-control" id="execution" [(ngModel)]="project.execution" name="execution"
+                    #execution="ngModel"></quill-editor>
+                </div>
+              </div>
+            </div>
+          </mat-step>
+          <mat-step label="Media">
+            <div class="step-content">
+
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}</span><span
+                      class="text-muted mx-3">(max: 20 images)</span></p>
+                  <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="20" fileAccept="image/*"
+                    [linkEnabled]="false" multiple>
+                  </input-file>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+                  <div fxLayout="row wrap">
+                    <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+                      <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.VIDEO' | translate}}</span><span
+                          class="text-muted mx-3">( {{'COMMON.YOUTUBE_LINK'|translate}})</span></p>
+                      <button type="button" mat-icon-button color="primary" (click)="addVideo()"
+                        matTooltip="{{'COMMON.ADD_VIDEO'|translate}}" matTooltipPosition="after">
+                        <mat-icon>add_circle</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap">
+                      <div *ngFor="let video of project.videos; let i = index;" fxFlex="100" fxFlex.gt-sm="100" class="step-section">
+                        <div fxFlex="4" class="fw-500 text-center pt-3">{{i+1}}.</div>
+                        <div fxFlex="90" fxLayout="row wrap">
+                          <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="40" class="px-2">
+                            <mat-label>{{'COMMON.NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'COMMON.NAME' | translate}}" [(ngModel)]="video.name"
+                              name="videoName + {{i}}" autocomplete="off">
+                          </mat-form-field>
+                          <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="60" class="px-2">
+                            <mat-label>{{'COMMON.LINK' | translate}}</mat-label>
+                            <input matInput placeholder="{{'COMMON.LINK_TO_VIDEO' | translate}}"
+                              [(ngModel)]="video.link" name="videoLink + {{i}}" autocomplete="off">
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex="6" class="text-center pt-2">
+                          <button type="button" mat-icon-button color="warn" (click)="deleteVideo(video.id, i)"
+                            matTooltip="{{'COMMON.DELETE' | translate}}">
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+        <div fxLayout="row wrap" *ngIf="canEdit()||isAdmin()">
+          <div fxFlex="100" fxFlex.gt-sm="100" class="h-100 w-100 text-right">
+            <h2 *ngIf="messages" style="color: green;"> {{messages}} </h2>
+            <h2 *ngIf="error" style="color: red;"> {{error}} </h2>
+            <button type="submit" mat-raised-button color="primary">
+              <span>{{horizontalStepper.selectedIndex < 5?('COMMON.NEXT'|translate):('COMMON.SUBMIT_PROJECT'|translate)}}</span>
+              <span class="material-icons">
+                navigate_next
+              </span>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </form>
+
+  </div>
+</div> -->

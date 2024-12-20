@@ -1,0 +1,58 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid && sendEmail()" #f="ngForm" validate>
+
+    <mat-tab-group>
+      <mat-tab label="{{'COMMON.EMAIL' | translate}}">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+            <mat-label> {{'COMMON.SUBJECT' | translate}}<font color="red">*</font></mat-label>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput type="text" class="form-control" id="subject" [(ngModel)]="email.subject" name="subject"
+                #subject="ngModel" required>
+              <mat-error *ngIf="f.submitted && subject.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="20" class="p-3">
+            <mat-checkbox class="mb-2 d-block" [(ngModel)]="email.sendEmail" id="email" name="email">
+              E-mail
+            </mat-checkbox>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="20" class="p-3">
+            <mat-checkbox class="mb-2 d-block" [(ngModel)]="email.sendSms" id="sms" name="sms">
+              SMS
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap">
+          <mat-label> {{'COMMON.MESSAGE' | translate}}<font color="red">*</font></mat-label>
+          <quill-editor class="form-control" id="body" [(ngModel)]="email.body" name="body" #body="ngModel" required></quill-editor>
+          <mat-error *ngIf="f.submitted && body.invalid" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </div>
+
+      </mat-tab>
+    </mat-tab-group>
+    <br />
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SEND' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button> </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

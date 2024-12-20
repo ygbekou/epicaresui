@@ -1,0 +1,65 @@
+<mat-tab-group [(selectedIndex)]="selectedMainTabIndex" (selectedTabChange)="onMainTabChanged($event)">
+  <mat-tab label="{{'COMMON.SLIDER' | translate}}">
+    <form name="form" (ngSubmit)="f.form.valid && saveSlider()" #f="ngForm" validate>
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+          <!-- <a (click)="clear()" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+            <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+          </a>
+          <br /> -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.RANK' | translate}}
+            </mat-label>
+            <input matInput type="text" class="form-control" id="rank" [(ngModel)]="slider.rank" name="rank"
+              #rank="ngModel"> 
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.NAME' | translate}}<font color="red">*</font>
+            </mat-label>
+            <input matInput type="text" class="form-control" id="name" [(ngModel)]="slider.name" name="name"
+              #name="ngModel" required>
+            <mat-error *ngIf="f.submitted && name.invalid" severity="error">
+              {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+          
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-sm="75" fxLayoutAlign="start center" class="my-3 px-2">
+          <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}
+            </span> </p>
+          <input-file [(ngModel)]="sliderImages" name="sliderImage" #sliderImage="ngModel" fileLimit="1"
+            fileAccept="image/*">
+          </input-file>
+
+          <div class="logo">
+            <img [src]="'assets/images/sliders/'+slider.id+'/'+slider.picture" [style.width.px]="150"
+              class="d-block">
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-sm="25">
+          <mat-slide-toggle [(ngModel)]="slider.status" name="status" #status="ngModel" class="my-2">
+            {{ 'COMMON.ENABLE' | translate }}
+          </mat-slide-toggle>
+        </div>
+      </div>
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+          <div class="text-center mt-2">
+            <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+              <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+              <mat-icon>save</mat-icon>
+            </button> </div>
+          <div class="text-center mt-2" *ngIf="messages">
+            <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-tab>
+
+  </mat-tab-group>

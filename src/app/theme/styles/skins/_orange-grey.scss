@@ -1,0 +1,11 @@
+$orange-grey-primary: mat-palette($mat-deep-orange, A400,50,900);
+$orange-grey-accent: mat-palette($mat-green, 600, 100, 900);
+$orange-grey-warn: mat-palette($mat-red, A200);
+$background-color: map_get($mat-blue-gray, 50); 
+$orange-grey-theme: mat-light-theme($orange-grey-primary, 
+$orange-grey-accent,$orange-grey-warn);
+
+// Insert custom background color
+$background: map-get($orange-grey-theme, background);
+$background: map_merge($background, (background: $background-color));
+$orange-grey-theme: map_merge($orange-grey-theme, (background: $background));

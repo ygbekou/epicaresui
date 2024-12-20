@@ -1,0 +1,82 @@
+<mat-card class="property-item p-0" [ngClass]="[viewType + '-item', 'column-'+column]"
+    [class.full-width-page]="fullWidthPage" fxLayout="row wrap" style="display: block;">
+
+    <div fxFlex="100" [fxFlex.gt-sm]="(viewType=='list') ? 60 : 100" [fxFlex.sm]="(viewType=='list') ? 50 : 100"
+        class="p-3">
+
+        <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
+            <mat-card-content class="mb-0">
+                <a color="accent" style="width: 100%; text-decoration: none;"
+                    [routerLink]="['/events', eventDesc.event.id]">
+                    <h4 class="title">
+                        <span>N<sup>o</sup>:<span
+                                class="fw-500 mx-2">{{eventDesc.event?.id |number:'3.0'}}</span></span> :
+                        {{eventDesc.title}}</h4>
+                </a>
+                <hr />
+                <p fxLayout="row" class="address" *ngIf="eventDesc.event.coordinator">
+                    <mat-icon color="accent" class="text-muted">import_contacts</mat-icon>
+                    <span>{{'COMMON.COORDINATOR'|translate }} :
+                        {{eventDesc.event.coordinator.name}}</span>
+                </p>
+                <p fxLayout="row" class="address">
+                    <mat-icon color="accent" class="text-muted">place</mat-icon>
+                    <span>{{'COMMON.LOCATION'|translate}}: {{eventDesc.event.location}}</span>
+                </p>
+
+
+                <!-- <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <app-rating [ratingsCount]="pollDesc.ratingCount" [ratingsValue]="project.rating">
+                    </app-rating>
+                    <span color="accent">{{ 'COMMON.VIEWS' | translate }}:
+                        {{project?.viewCount}}
+                    </span>
+                    <span *ngIf="project.status === 0" style="color: #ff0000;">{{'COMMON.SUBMITTED'|translate}}</span>
+                    <span *ngIf="project.status === 1"
+                        style="color: #283593; background: yellow;">{{'COMMON.IN_REVIEW'|translate}}</span>
+                    <span *ngIf="project.status === 5"
+                        style="color: green; background: yellow;">{{'COMMON.APPROVED'|translate}}</span>
+                    <span *ngIf="project.status === 10"
+                        style="color: green; background: yellow;">{{'COMMON.IN_PROGRESS'|translate}}</span>
+                    <span *ngIf="project.status === 90"
+                        style="color: green; background: yellow;">{{'COMMON.COMPLETED'|translate}}</span>
+                    <span *ngIf="project.status === 99"
+                        style="color: red; background: yellow;">{{'COMMON.REJECTED'|translate}}</span>
+                </div> -->
+
+                <div fxShow="false" fxShow.gt-sm class="mt-3">
+                    <div [innerHTML]="eventDesc.description | safehtml"></div>
+                </div>
+                <br />
+                <p fxLayout="row" class="address">
+                    <mat-icon class="text-muted">date_range</mat-icon>
+                    <span class="mx-2">{{eventDesc.event.beginDate | date:"dd MMMM, yyyy hh:mm" }} -
+                        {{eventDesc.event.endDate | date:"dd MMMM, yyyy hh:mm" }}</span>
+                </p>
+
+                <!-- <div class="features mt-3">
+                    <div [innerHTML]="eventDesc.shortDescription | safehtml"></div>
+                </div> -->
+
+            </mat-card-content>
+            <div class="sticky-footer-helper" fxFlex="grow"></div>
+            <mat-card-actions class="m-0 p-0" fxLayoutAlign="space-between center">
+                <p fxLayout="row" class="date mb-0">
+                </p>
+                <div>
+                    <!-- <a [routerLink]="['/projects', project.id]" mat-stroked-button color="primary" class="uppercase">
+                        {{'COMMON.READ_MORE'|translate }}</a> -->
+                    <a [routerLink]="['/event-details', eventDesc.event.id]" mat-stroked-button color="primary"
+                        class="uppercase" *ngIf="eventDesc.event.status ===  1">
+                        {{'COMMON.READ_MORE'|translate }}</a>
+                    <a [routerLink]="['/event-details', eventDesc.event.id]" mat-stroked-button color="primary"
+                        class="uppercase" *ngIf="eventDesc.event.status ===  2">
+                        {{'COMMON.RESULTS'|translate }}</a>
+
+                </div>
+            </mat-card-actions>
+        </div>
+
+    </div>
+
+</mat-card>

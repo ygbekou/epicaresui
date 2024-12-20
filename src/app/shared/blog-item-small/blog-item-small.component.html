@@ -1,0 +1,30 @@
+<mat-card>
+
+    <div class="swiper-lazy-preloader"></div>
+    <mat-card-content>
+        <img [attr.data-src]="news.gallery[0].medium" alt="" class="swiper-lazy d-block"
+            style="margin-right: 10px;margin-bottom: 5px;" align="left" width="30%">
+        <h5 class="fw-600">Le titre du blog apparaitra ici</h5>
+        <hr />
+        <p><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet nisl quis est
+                posuere, sit amet mattis enim dictum. Integer pulvinar varius dignissim...</span></p>
+
+        <p fxLayoutAlign="start center">
+            <mat-icon color="primary" matTooltip="Organization" matTooltipPosition="above">business
+            </mat-icon><span class="mx-2"><strong>
+                    {{'Poyodi'}}, {{'Bidama '}}
+                </strong></span>
+        </p>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" class="text-muted">
+            <app-rating [ratingsCount]="news.ratingCount" [ratingsValue]="news.rating">
+            </app-rating>
+        </div>
+        <div>
+            <a [routerLink]="['/blogs', news.id]" mat-button color="primary" class="uppercase">Lire
+                la suite</a>
+        </div>
+    </mat-card-actions>
+</mat-card>

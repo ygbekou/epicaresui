@@ -1,0 +1,13 @@
+<div style="display: block" *ngIf="showChart">
+   <canvas baseChart
+      height="400vh"
+      width="800vw"
+      [datasets]="data" 
+      [labels]="label"
+      [legend]="chartLegend"
+      [options]="barChartOptions"
+      [colors]="color"
+      (chartClick)="chartClicked($event)" 
+      [chartType]="chartType">   
+    </canvas>
+</div>

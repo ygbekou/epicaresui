@@ -1,0 +1,127 @@
+<footer>
+
+    <div class="px-3">
+        <div class="theme-container">
+
+            <div fxLayout="column" fxLayout.gt-sm="row wrap" fxLayoutAlign="center center"
+                class="content border-lighter py-5">
+                <div fxFlex="100" fxFlex.gt-sm="40" fxLayout="column" fxLayoutAlign="center center">
+                    <h2 class="uppercase">{{'COMMON.SUSCRIBE_TO_BLOG'|translate}}</h2>
+                    <p class="desc mb-1">{{'COMMON.STAY_INFORMED'|translate}}</p>
+                </div> 
+                <form [formGroup]="subscribeForm" (ngSubmit)="onSubscribeFormSubmit(subscribeForm.value)"
+                    class="custom-form" fxLayout="row" fxFlex="100" fxFlex.gt-sm="42.4" ngClass.sm="mt-2"
+                    ngClass.xs="mt-2">
+                    <mat-form-field *ngIf="!messages" appearance="outline" floatLabel="always" class="subscribe-input"
+                        fxFlex>
+                        <input matInput autocomplete="off" formControlName="email"
+                            placeholder="{{'COMMON.E_MAIL'|translate}}">
+                        <mat-error *ngIf="subscribeForm.controls.email.errors?.required">
+                            {{'VALIDATION.EMAIL_REQUIRED'|translate}}
+                        </mat-error>
+                        <mat-error *ngIf="subscribeForm.controls.email.hasError('invalidEmail')">
+                            {{'VALIDATION.EMAIL_INVALID'|translate}}</mat-error>
+                    </mat-form-field>
+                    <div class="text-center mt-2" *ngIf="messages">
+                        <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+                    </div>
+                    <button mat-flat-button type="submit" class="subscribe-btn" *ngIf="!messages"
+                        color="primary">{{'COMMON.SUSCRIBE'|translate}}</button>
+
+                </form>
+
+            </div>
+
+            <div class="py-5 content border-lighter">
+
+                <div fxLayout="row wrap" fxLayoutAlign="space-between">
+                    <div fxFlex="100" fxFlex.gt-sm="30" fxFlex.sm="45">
+                        <a class="logo" routerLink="/">
+                            <app-logo></app-logo>
+                        </a>
+                        <p class="mt-5 mb-3 desc">{{appService.company.footerParagraph1}}
+                        </p>
+
+                        <p fxLayout="row" fxLayoutAlign="start center" class="mt-2">
+                            <mat-icon color="primary">location_on</mat-icon>
+                            <span class="mx-2">{{appService.company.address}}</span>
+                        </p>
+                        <p fxLayout="row" fxLayoutAlign="start center" class="mt-1">
+                            <mat-icon color="primary">call</mat-icon>
+                            <span class="mx-2">{{appService.company.phone}}</span>
+                        </p>
+                        <p fxLayout="row" fxLayoutAlign="start center" class="mt-1">
+                            <mat-icon color="primary">mail_outline</mat-icon>
+                            <span class="mx-2">{{appService.company.email}}</span>
+                        </p>
+                        <p fxLayout="row" fxLayoutAlign="start center" class="mt-1" *ngIf="appService.company.footerParagraph2">
+                            <mat-icon color="primary">schedule</mat-icon>
+                            <span class="mx-2">{{appService.company.footerParagraph2}}</span>
+                        </p>
+                        <app-social-icons [iconSize]="'lg'" fxLayout="row" fxLayoutAlign="start center" class="desc">
+                        </app-social-icons>
+                    </div>
+
+                    <div fxFlex="100" fxFlex.gt-sm="30" fxFlex.sm="45" ngClass.xs="pt-5"
+                        *ngIf="appService.company.displayFooterContact">
+                        <h2 class="uppercase">Feedback</h2>
+                        <p class="desc">{{'MESSAGE.SEND_US_FEEDBACK'|translate}}</p>
+                        <form [formGroup]="feedbackForm" (ngSubmit)="onFeedbackFormSubmit(feedbackForm.value)"
+                            class="custom-form pt-2">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>{{'COMMON.NAME'|translate}}</mat-label>
+                                <input matInput placeholder="{{'COMMON.NAME'|translate}}" autocomplete="off"
+                                    formControlName="name">
+                                <mat-error *ngIf="feedbackForm.controls.name.errors?.required">
+                                    {{'VALIDATION.NAME_REQUIRED'|translate}}
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>E-mail</mat-label>
+                                <input matInput autocomplete="off" formControlName="email">
+                                <mat-error *ngIf="feedbackForm.controls.email.errors?.required">
+                                    {{'VALIDATION.EMAIL_REQUIRED'|translate}}
+                                </mat-error>
+                                <mat-error *ngIf="feedbackForm.controls.email.hasError('invalidEmail')">
+                                    {{'VALIDATION.EMAIL_INVALID'|translate}}</mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>{{'COMMON.MESSAGE_FOR_US'|translate}}</mat-label>
+                                <textarea matInput formControlName="message" rows="6"></textarea>
+                                <mat-error *ngIf="feedbackForm.controls.message.errors?.required">
+                                    {{'VALIDATION.MESSAGE_REQUIRED'|translate}}
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="w-100 text-center">
+                                <div class="text-center mt-2" *ngIf="messages">
+                                    <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+                                </div>
+                                <button mat-flat-button color="primary" class="uppercase"
+                                    type="submit">{{'MESSAGE.SEND_MESSAGE'|translate}}</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div fxFlex="100" [fxFlex.gt-sm]="appService.company.displayFooterContact?30:60"
+                        ngClass.lt-md="pt-5">
+                        <h2 class="uppercase mb-3">{{'COMMON.OUR_LOCATION'|translate}}</h2>
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [mapTypeControl]="false"
+                            [styles]="mapStyles">
+                            <agm-marker [latitude]="lat" [longitude]="lng" [markerDraggable]="false"></agm-marker>
+                        </agm-map>
+                    </div>
+                </div>
+
+            </div>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" class="copyright">
+                <p ngClass.xs="mt-1">Copyright © 2024 All Rights Reserved</p>
+                <p>Designed & Developed by <a mat-button href="http://www.softenza.com/" target="_blank">Softenza
+                        Inc.</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</footer>

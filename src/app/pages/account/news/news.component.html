@@ -1,0 +1,147 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+    <mat-tab-group>
+      <mat-tab label="{{'COMMON.ARTICLE' | translate}}">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+            <a (click)="clear()" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+              <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+            </a>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="15" class="p-3" *ngIf="flag">
+            <a mat-button [matMenuTriggerFor]="langMenu" #langMenuTrigger="matMenuTrigger">
+              <img [src]="flag.image" width="18">
+              <span fxShow="false" fxShow.gt-md class="uppercase flag-name">{{flag.name}}</span>
+              <mat-icon class="mat-icon-sm caret">arrow_drop_down</mat-icon>
+            </a>
+            <mat-menu #langMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="app-menu-panel">
+              <span (mouseleave)="langMenuTrigger.closeMenu()">
+                <button mat-menu-item *ngFor="let flag of flags" (click)="changeLang(flag)">
+                  <img [src]="flag.image" width="18" class="mat-elevation-z1"><span
+                    class="flag-name">{{flag.name}}</span>
+                </button>
+              </span>
+            </mat-menu>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="75" class="p-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'COMMON.TITLE' | translate}}<font color="red">*</font>
+              </mat-label>
+              <input matInput type="text" class="form-control" id="title" [(ngModel)]="news.title" name="title"
+                #title="ngModel" required>
+              <mat-error *ngIf="f.submitted && title.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3"></div>
+          <div fxFlex="100" fxFlex.gt-sm="75" class="p-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'COMMON.AUTHOR' | translate}}
+              </mat-label>
+              <input matInput type="text" class="form-control" id="authorText" [(ngModel)]="news.authorText" name="authorText"
+                #authorText="ngModel"> 
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-slide-toggle [(ngModel)]="news.status" name="status" #status="ngModel" class="my-2">
+              {{ 'COMMON.ENABLE' | translate }}
+            </mat-slide-toggle>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-slide-toggle [(ngModel)]="news.featured" name="featured" #featured="ngModel" class="my-2">
+              {{ 'COMMON.FEATURED' | translate }}
+            </mat-slide-toggle>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            {{ 'COMMON.RATING' | translate }}
+            <app-rating [ratingsCount]="news.ratingCount" [ratingsValue]="news.rating">
+            </app-rating>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            {{ 'COMMON.VIEWS' | translate }}
+            <button mat-fab color="accent">{{news?.viewCount}} </button>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <mat-label> {{'COMMON.CONTENT' | translate}}<font color="red">*</font>
+          </mat-label>
+          <quill-editor [styles]="{height: '450px'}"  class="form-control" id="content" [(ngModel)]="news.content" name="content" #content="ngModel"
+            required></quill-editor>
+          <mat-error *ngIf="f.submitted && content.invalid" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+
+        </div>
+      </mat-tab>
+
+      <mat-tab label="{{'COMMON.PICTURE' | translate}}">
+        <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+          <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}</span><span
+              class="text-muted mx-3">(max: 8 images)</span></p>
+          <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="8" fileAccept="image/*"
+            [linkEnabled]="false" multiple>
+          </input-file>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="{{'COMMON.VIDEO' | translate}}">
+        <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+          <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.VIDEO' | translate}}</span><span
+              class="text-muted mx-3">({{'COMMON.YOUTUBE_LINK'|translate}})</span></p>
+          <button type="button" mat-icon-button color="primary" (click)="addNewsVideo()" matTooltip="Add New NewsVideo"
+            matTooltipPosition="after">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+        <div id="newsVideos" fxFlex="100" fxLayout="row wrap">
+          <div *ngFor="let newsVideo of news.videos; let i = index;" fxFlex="100" class="step-section">
+            <div fxFlex="4" class="fw-500 text-center pt-3">{{i+1}}.</div>
+            <div fxFlex="90" fxLayout="row wrap">
+              <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="40" class="px-2">
+                <mat-label>{{'COMMON.NAME' | translate}}</mat-label>
+                <input matInput placeholder="{{'COMMON.NAME' | translate}}" [(ngModel)]="newsVideo.name"
+                  name="newsVideoName + {{i}}" autocomplete="off">
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="60" class="px-2">
+                <mat-label>{{'COMMON.LINK' | translate}}</mat-label>
+                <input matInput placeholder="{{'COMMON.LINK_TO_VIDEO' | translate}}" [(ngModel)]="newsVideo.link"
+                  name="newsVideoLink + {{i}}" autocomplete="off">
+              </mat-form-field>
+            </div>
+            <div fxFlex="6" class="text-center pt-2">
+              <button type="button" mat-icon-button color="warn" (click)="deleteNewsVideo(newsVideo.id, i)"
+                matTooltip="{{'COMMON.DELETE' | translate}}">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <br />
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button> </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

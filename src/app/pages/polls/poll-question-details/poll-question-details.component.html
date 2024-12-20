@@ -1,0 +1,120 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/polls.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="false" desc="{{ 'COMMON.MAKE_YOUR_CHOICE' | translate }}" [contentMinHeight]="200">
+</app-header-image-small>
+
+<div class="px-3">
+
+    <div class="theme-container">
+        <mat-sidenav-container class="all-properties mt-3">
+            <mat-sidenav-content ngClass.gt-sm="distance">
+
+                <div fxLayout="row wrap">
+                    <div fxFlex="100" fxFlex.gt-sm="50" class="p-2">
+                        <mat-chip-list [ngClass]="(settings.rtl) ? 'ml-2' : 'mr-2'">
+                            <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                {{ pagination?.total }} {{'COMMON.CHOICES'|translate}}
+                            </mat-chip>
+                        </mat-chip-list>
+                        <app-blogs-search-results-filters [searchFields]="searchFields"
+                            (onRemoveSearchField)="removeSearchField($event)">
+                        </app-blogs-search-results-filters>
+                    </div>
+
+                    <div fxFlex="100" fxFlex.gt-sm="50" class="p-2">
+                        
+                        <button mat-raised-button color="primary" (click)="submitVote()" type="button"
+                            *ngIf="selectedVote?.status < 5 && operation === 'scrutin'" matTooltip="{{'COMMON.SUBMIT' | translate}}"
+                            class="remove">
+                            <span class="mx-1 uppercase">{{'COMMON.SUBMIT' | translate}}</span>
+                            <mat-icon>save</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" class="properties-wrapper mt-0">
+                    <div *ngFor="let pollChoiceDesc of pollChoiceDescs" [fxFlex]="(viewType=='grid') ? viewCol : 100"
+                        class="item">
+                        <mat-card class="property-item p-0" fxLayout="row wrap" style="display: block;">
+
+                            <div fxFlex="100" [fxFlex.gt-sm]="(viewType=='list') ? 60 : 100"
+                                [fxFlex.sm]="(viewType=='list') ? 50 : 100" class="p-3">
+
+                                <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
+                                    <mat-card-content class="mb-0">
+                                        <div fxLayout="row wrap">
+                                            <div fxFlex.xs="75" fxFlex.sm="75" fxFlex.md="75" fxFlex.lg="75"
+                                                fxFlex.xl="75" class="p-3">
+
+                                                <a color="accent" style="width: 100%; text-decoration: none;"
+                                                    [routerLink]="['/polls', pollChoiceDesc.pollChoice.id]">
+                                                    <h4 class="title">
+                                                        <span>N<sup>o</sup>:<span
+                                                                class="fw-500 mx-2">{{pollChoiceDesc.pollChoice?.rank |number:'3.0'}}</span></span>
+                                                        : {{pollChoiceDesc.pollChoice?.user.firstName}}
+                                                        {{pollChoiceDesc.pollChoice?.user.lastName}}</h4>
+                                                </a>
+                                            </div>
+                                            <div fxFlex.xs="25" fxFlex.sm="25" fxFlex.md="25" fxFlex.lg="25"
+                                                fxFlex.xl="25" class="p-3">
+                                                <img src="assets/images/users/{{pollChoiceDesc.pollChoice?.user.id}}/{{pollChoiceDesc.pollChoice?.user.picture}}"
+                                                    alt="" width="50">
+                                            </div>
+
+                                        </div>
+                                        <hr />
+                                        <div fxShow="false" fxShow.gt-sm class="mt-3">
+                                            <div [innerHTML]="pollChoiceDesc.description | safehtml"></div>
+                                        </div>
+
+                                    </mat-card-content>
+                                    <div class="sticky-footer-helper" fxFlex="grow"></div>
+                                    <mat-card-actions class="m-0 p-0" fxLayoutAlign="space-between center">
+                                        <p fxLayout="row" class="date mb-0">
+                                            <span class="mx-2" *ngIf="operation === 'results'"
+                                                style="color:blue;font-size:30px;font-weight: bold;">{{pollChoiceDesc.pollChoice.voteCounts}}
+                                                {{'COMMON.VOTE' | translate}}s</span>
+
+                                        </p>
+                                        <div>
+                                            <button mat-icon-button color="green" type="button" [disabled]="true"
+                                                *ngIf="pollChoiceDesc.pollChoice.voted"
+                                                matTooltip="{{'COMMON.VOTED' | translate}}" class="remove">
+                                                <mat-icon color="green" class="green-icon mat-icon-xlg">check_box
+                                                </mat-icon>
+                                            </button>
+                                            <button mat-icon-button color="red" type="button" [disabled]="true" *ngIf="(!pollChoiceDesc.pollChoice.voted && (selectedVote?.status === 5
+                                                || pollChoiceDesc.pollChoice.pollQuestion.poll.status >= 2))"
+                                                matTooltip="{{'COMMON.NOT_VOTED' | translate}}" class="remove">
+                                                <mat-icon color="red" class="red-icon mat-icon-xlg">cancel
+                                                </mat-icon>
+                                            </button>
+                                        
+                                            <button mat-icon-button color="primary" *ngIf="pollChoiceDesc.pollChoice.pollQuestion.poll.status < 2 && 
+                                            (!pollChoiceDesc.pollChoice.voted && (!selectedVote || (selectedVote && selectedVote?.status < 5)))"
+                                                (click)="performVote(pollChoiceDesc.pollChoice.id)" type="button"
+                                                matTooltip="{{'COMMON.VOTE' | translate}}" class="remove">
+                                                <mat-icon color="primary" class="mat-icon-xlg">thumb_up_alt</mat-icon>
+                                            </button>
+                                        </div>
+                                    </mat-card-actions>
+                                </div>
+
+                            </div>
+
+                        </mat-card>
+                    </div>
+                    <div *ngIf="pollChoiceDescs?.length == 0" fxFlex="100" fxLayoutAlign="center center"
+                        [style.min-height.px]="200">
+                        <mat-spinner *ngIf="!message"></mat-spinner>
+                        <mat-chip-list *ngIf="message">
+                            <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                {{message}}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+</div>
+<app-get-in-touch></app-get-in-touch>

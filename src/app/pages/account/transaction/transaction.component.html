@@ -1,0 +1,117 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+        <a (click)="clear()" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+          <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+        </a>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.MEMBER' | translate}}</mat-label>
+          <input type="text" placeholder="{{'COMMON.SELECT_MEMBER'|translate}}" aria-label="Number" name="currentUserOption"
+            matInput [matAutocomplete]="userOptionAuto" [(ngModel)]="currentUserOption" required 
+            (ngModelChange)="filterUserOptions(currentUserOption)">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+          <mat-autocomplete id="usOption" #userOptionAuto="matAutocomplete">
+            <mat-option *ngFor="let uOption of filteredUserOptions "  [value]="uOption.name"
+              (onSelectionChange)="transaction.user = uOption;">
+              {{uOption.name}}
+            </mat-option> 
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.PROJECT' | translate}}</mat-label>
+          <input type="text" placeholder="{{'COMMON.SELECT_PROJECT'|translate}}" aria-label="Number" name="currentProjectOption"
+            matInput [matAutocomplete]="projectOptionAuto" [(ngModel)]="currentProjectOption" required 
+            (ngModelChange)="filterProjectOptions(currentProjectOption)">
+          <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+          <mat-autocomplete id="projOption" #projectOptionAuto="matAutocomplete">
+            <mat-option *ngFor="let pOption of filteredProjectOptions " [value]="pOption.projectDescs[0].title" 
+            (onSelectionChange)="transaction.project = pOption;">
+              {{pOption.projectDescs[0].title}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field class="w-100">
+          <mat-label> {{'COMMON.DATE' | translate}}</mat-label><br />
+          <input matInput [matDatepicker]="tranDatePicker" class="form-control" id="tranDate" [(ngModel)]="transaction.tranDate"
+            name="tranDate" #tranDate="ngModel" required>
+          <mat-datepicker-toggle matSuffix [for]="tranDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #tranDatePicker></mat-datepicker>
+          <mat-error *ngIf="f.submitted && tranDate.invalid" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100" >
+          <mat-label> {{'COMMON.AMOUNT' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="amount" [(ngModel)]="transaction.amount" name="transaction" 
+            #amount="ngModel" required>
+          <mat-error *ngIf="f.submitted && amount.invalid" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-radio-group id="io" [(ngModel)]="transaction.io" name="io" #io="ngModel" required>
+          <mat-radio-button [value]="0">
+              {{'COMMON.CONTRIBUTION' | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="1">
+              {{'COMMON.EXPENSE' | translate }}
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-error *ngIf="f.submitted && io.invalid" severity="error">
+            {{'VALIDATION.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </div>
+
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-checkbox class="mb-2 d-block" [(ngModel)]="transaction.anonymous" id="anonymous" name="anonymous">
+          {{'COMMON.ANONYM' | translate }}
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" class="p-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label> {{'COMMON.COMMENT' | translate}}</mat-label>
+        <textarea matInput type="text" class="form-control" id="comment" [(ngModel)]="transaction.comment" name="comment" 
+          #comment="ngModel" rows="5"></textarea>
+      </mat-form-field>
+    </div>
+
+
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button> </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

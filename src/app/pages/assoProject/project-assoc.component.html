@@ -1,0 +1,300 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/projects.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="false" desc="{{ 'MESSAGE.WELCOME_ON_PROJECT' | translate }}" [contentMinHeight]="200">
+</app-header-image-small>
+<div class="theme-container">
+	<div fxLayout="row wrap" fxLayoutAlign="center center" class="dashTitle">
+		<div fxLayoutAlign="center center" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+			{{projectDesc.title}}
+		</div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" *ngIf="project.status !== 1">
+			<a mat-raised-button routerLink="/payment/{{project.id}}/0" color="accent"
+				class="w-100">{{'COMMON.DONATE_FOR_PROJECT' | translate }}</a>
+		</div>
+	</div>
+
+	<div fxLayout="row wrap" fxLayoutAlign="center center" class="dashDescription">
+		<div fxLayoutAlign="center center" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+			<div [innerHTML]="projectDesc.description | safehtml"></div>
+		</div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20"></div>
+	</div>
+	<div fxLayout="row wrap">
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+
+			<app-generic-chart *ngIf="chartData && chartData.data" (chartClick)="chartClick($event)" [chartType]="chartType" [color]="chartData.colors"
+				[data]="chartData.data" [label]="chartData.labels">
+			</app-generic-chart>
+
+		</div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"></div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" *ngIf="dashboard">
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}} {{dashboard.budget | number: '1.0-0': appService.getFlag().code}}
+			</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.BUDGET' | translate}}</div>
+			<br />
+
+			<!-- <div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}} {{dashboard.expenses | number: '1.0-0': appService.getFlag().code}}
+			</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.EXPENSE' | translate}}s</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}}
+				{{dashboard.minExpense | number: '1.0-0': appService.getFlag().code}}</div>
+
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.MIN_EXPENSE' | translate}}</div>
+			<br />
+ -->
+			<!-- <div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}}
+				{{dashboard.contribution | number: '1.0-0': appService.getFlag().code}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.CONTRIBUTION' | translate}}</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{dashboard.nbrContributions | number: '1.0-0':appService.getFlag().code}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.NBR_CONTRIBUTIONS' | translate}}</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}}
+				{{dashboard.minContribution | number: '1.0-0': appService.getFlag().code}}</div>
+
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.MIN_CONTRIBUTION' | translate}}</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}}
+				{{dashboard.maxContribution | number: '1.0-0': appService.getFlag().code}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.MAX_CONTRIBUTION' | translate}}</div> -->
+
+		</div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"></div>
+		<!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" *ngIf="dashboard">
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{dashboard.duration | number: '1.0-0':'fr'}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.DURATION' | translate}}</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{dashboard.nbrExpenses | number: '1.0-0':'fr'}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.NBR_EXPENSES' | translate}}</div>
+			<br />
+
+			<div fxLayout="row wrap" class="dashNumber dashLine">
+				{{appService.company.currencyCode}}
+				{{dashboard.maxExpense | number: '1.0-0': appService.getFlag().code}}</div>
+			<div fxLayout="row wrap" class="dashLabel dashLine">
+				{{'COMMON.MAX_EXPENSE' | translate}}</div>
+		</div> -->
+	</div>
+	<br />
+
+	<mat-accordion>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">group</mat-icon> {{projectDesc.title}}...
+						{{'COMMON.WHY' | translate}}?
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<br />
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+					<div [innerHTML]="projectDesc.existant | safehtml"></div>
+				</div>
+			</div>
+			<div fxLayout="row wrap" class="properties-wrapper mt-0" style="width: 100%;">
+
+
+				<mat-card class="mt-3" *ngIf="project?.fileNames && project?.fileNames.length>0" style="width: 100%;">
+					<div class="main-carousel mb-3" style="height: 500px;">
+
+						<!--  <div *ngIf="project" class="control-icons">
+                         <button mat-button [disabled]="onFavorites()" (click)="addToFavorites()"
+                                matTooltip=" {{'COMMON.ADD_FAVORITE'|translate }}">
+                                <mat-icon class="">favorite_border</mat-icon>
+                            </button> 
+                         </div>
+                         -->
+						<span>
+							<h3>{{'COMMON.OUR_PROJECT_IN_IMAGES'|translate }}</h3>
+						</span>
+
+						<div id="main-carousel" class="swiper-container" [swiper]="config"
+							(indexChange)="onIndexChange($event)" style="height: 500px;">
+							<div class="swiper-wrapper">
+								<div *ngFor="let image of project?.fileNames" class="swiper-slide" style="width:80% !important;">
+									<img [attr.data-src]="'assets/images/projects/' + project.id + '/'+image"
+										class="swiper-lazy">
+									<div class="swiper-lazy-preloader"></div>
+								</div>
+							</div>
+							<button mat-mini-fab color="primary" class="swiper-button-prev swipe-arrow">
+								<mat-icon>keyboard_arrow_left</mat-icon>
+							</button>
+							<button mat-mini-fab color="primary" class="swiper-button-next swipe-arrow">
+								<mat-icon>keyboard_arrow_right</mat-icon>
+							</button>
+						</div>
+					</div>
+					<div class="small-carousel">
+						<div id="small-carousel" class="swiper-container" [swiper]="config2">
+							<div class="swiper-wrapper">
+								<div *ngFor="let image of project?.fileNames; let i=index;" class="swiper-slide"
+									[ngClass]="'thumb-'+i" [class.active-thumb]="i == 0">
+									<img [attr.data-src]="'assets/images/projects/' + project.id + '/'+image"
+										style="max-height:50px;" class="swiper-lazy mw-100" (click)="selectImage(i)">
+									<div class="swiper-lazy-preloader"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+		</mat-expansion-panel>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">flight_takeoff</mat-icon>
+						{{'COMMON.OBJECTIF_AND_EXPECTED_RESULTS' | translate}}
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<br />
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+					<div [innerHTML]="projectDesc.objectif | safehtml"></div>
+				</div>
+			</div>
+		</mat-expansion-panel>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">calendar_today</mat-icon>
+						{{'COMMON.DURATION_AND_DEAD_LINES' | translate}}
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<br />
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+					<div [innerHTML]="projectDesc.duration | safehtml"></div>
+				</div>
+			</div>
+		</mat-expansion-panel>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">money</mat-icon>
+						{{'COMMON.BUDGET_ESTIMATION_AND_HOW_TO_ACHIEVE' | translate}}
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<br />
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+					<div [innerHTML]="projectDesc.budgetLine | safehtml"></div>
+				</div>
+			</div>
+		</mat-expansion-panel>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">business</mat-icon>
+						{{'COMMON.POTENTIAL_SPONSORS' | translate}}
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<br />
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+					<div [innerHTML]="projectDesc.sponsors | safehtml"></div>
+				</div>
+			</div>
+		</mat-expansion-panel>
+		<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<h2>
+						<mat-icon color="primary" class="mat-icon-lg">photo</mat-icon>{{'COMMON.GALLERY' | translate}}
+					</h2><br />
+				</mat-panel-title>
+				<div style="align-items: right;">
+				</div>
+			</mat-expansion-panel-header>
+
+			<div fxLayout="row wrap" class="properties-wrapper mt-0" style="width: 100%;">
+				<mat-card class="mt-3" *ngIf="project?.fileNames && project?.fileNames.length>0" style="width: 100%;">
+					<div class="main-carousel mb-3" style="height: 500px;">
+
+						<div id="main-carousel" class="swiper-container" [swiper]="config"
+							(indexChange)="onIndexChange($event)" style="height: 500px;">
+							<div class="swiper-wrapper">
+								<div *ngFor="let image of project?.fileNames" class="swiper-slide" style="width:80% !important;">
+									<img [attr.data-src]="'assets/images/projects/' + project.id + '/'+image"
+										class="swiper-lazy">
+									<div class="swiper-lazy-preloader"></div>
+								</div>
+							</div>
+							<button mat-mini-fab color="primary" class="swiper-button-prev swipe-arrow">
+								<mat-icon>keyboard_arrow_left</mat-icon>
+							</button>
+							<button mat-mini-fab color="primary" class="swiper-button-next swipe-arrow">
+								<mat-icon>keyboard_arrow_right</mat-icon>
+							</button>
+						</div>
+					</div>
+					<div class="small-carousel">
+						<div id="small-carousel" class="swiper-container" [swiper]="config2">
+							<div class="swiper-wrapper">
+								<div *ngFor="let image of project?.fileNames; let i=index;" class="swiper-slide"
+									[ngClass]="'thumb-'+i" [class.active-thumb]="i == 0">
+									<img [attr.data-src]="'assets/images/projects/' + project.id + '/'+image"
+										style="max-height:50px;" class="swiper-lazy mw-100" (click)="selectImage(i)">
+									<div class="swiper-lazy-preloader"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+
+	<br />
+	<br />
+</div>

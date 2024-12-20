@@ -1,0 +1,52 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/careers.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="false" desc="{{ 'COMMON.CAREER' | translate }}"
+    [contentMinHeight]="200">
+</app-header-image-small>
+<div class="theme-container">
+    <div fxLayout="row wrap"><h1 style="color:blue;">{{'COMMON.AVAILABLE_POSITIONS' | translate}}</h1></div>
+    <br/>
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let jobPositionDesc of jobPositionDescs" (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>{{jobPositionDesc.title}}</h2><br/>
+                </mat-panel-title>
+                <div style="align-items: right;">
+                    <h5>{{jobPositionDesc.jobPosition.location}}</h5>
+                </div>
+            </mat-expansion-panel-header>
+
+            
+            <div fxLayout="row wrap">
+                <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-sm="10" class="p-1">
+                            <button mat-raised-button color="primary" (click)="apply(jobPositionDesc)" type="button"
+                                matTooltip="{{'COMMON.APPLY' | translate}}" class="remove">
+                                <span class="mx-1 uppercase">{{'COMMON.APPLY' | translate}}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div [innerHTML]="jobPositionDesc.description | safehtml"></div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-sm="10" class="p-1">
+                            <button mat-raised-button color="primary" (click)="apply(jobPositionDesc)" type="button"
+                                matTooltip="{{'COMMON.APPLY' | translate}}" class="remove">
+                                <span class="mx-1 uppercase">{{'COMMON.APPLY' | translate}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20">
+                    {{'COMMON.POSTED'|translate}}: {{jobPositionDesc.createDate |date: 'mediumDate' }}
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+
+<br />
+<br />
+<br />
+<app-get-in-touch></app-get-in-touch>

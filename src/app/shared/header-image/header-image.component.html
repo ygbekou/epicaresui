@@ -1,0 +1,33 @@
+<div class="header-image-wrapper" [dir]="(settings.rtl) ? 'rtl' : 'ltr'">
+  <div class="bg" [style.background-image]="bgImage" [class.bg-anime]="bgImageAnimate"></div>
+  <div class="mask"></div>
+  <div class="header-image-content" fxLayout="column" fxLayoutAlign="center center"
+    [class.offset-bottom]="contentOffsetToTop" [class.home-page]="isHomePage" [style.min-height.px]="contentMinHeight">
+    <div class="theme-container" fxLayout="row" fxLayoutAlign="space-between left">
+      <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+        <h1 *ngIf="title" class="title">
+          {{title?title:appService.company.bannerContentHeader}}</h1>
+        <br />
+        <p *ngIf="desc" class="desc">
+          {{desc?desc:appService.company.bannerContentParagraph}}
+        </p>
+
+        <br />
+         <div *ngIf="isHomePage" ngClass.gt-xs="mt-4" ngClass.xs="mt-3">
+          <a mat-raised-button color="primary" routerLink="/about">{{'COMMON.ABOUT_US'|translate}}</a>
+        </div>  
+        <div ngClass.gt-xs="mt-4" ngClass.xs="mt-3" style="text-align: center;">
+         <!--  <button routerLink="/submit-project/0" mat-raised-button color="primary">
+            <span>{{'COMMON.SUBMIT_PROJECT'|translate}}</span>
+          </button> -->
+          &nbsp;
+          <button routerLink="/contact" mat-raised-button color="primary">
+             <span>{{'COMMON.CONTACT_US'|translate}}</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

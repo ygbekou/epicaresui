@@ -1,0 +1,82 @@
+<a mat-raised-button routerLink="/account/online-payment" color="accent" 
+                        class="w-100">{{'COMMON.PAY_ONLINE' | translate }}</a>
+ 
+ 
+ <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+   <mat-tab label="{{'COMMON.LIST' | translate}}">
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+        <a (click)="edit(undefined)" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+          <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+          <td mat-cell *matCellDef="let transaction"> {{transaction.id}} </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="tranDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.DATE' | translate}} </th>
+          <td mat-cell *matCellDef="let transaction"> {{transaction.tranDate | date : 'mediumDate' : '' : translate.currentLang}} </td>
+        </ng-container>
+
+        <!-- project Column -->
+        <ng-container matColumnDef="projectTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.PROJECT' | translate}} </th>
+          <td mat-cell *matCellDef="let transaction"> {{transaction.projectTitle}} </td>
+        </ng-container>
+
+        <!-- member Column -->
+        <ng-container matColumnDef="memberName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.MEMBER' | translate}} </th>
+          <td mat-cell *matCellDef="let transaction"> {{transaction.memberName}} </td>
+        </ng-container>
+
+        <!-- amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.AMOUNT' | translate}} </th>
+          <td mat-cell *matCellDef="let transaction"> {{transaction.amount}} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let transaction">
+            <button mat-icon-button color="primary" (click)="edit(transaction.id)" 
+              matTooltip="{{'COMMON.EDIT' | translate}}"
+                class="remove">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="remove(transaction)" matTooltip="{{'COMMON.DELETE' | translate}}" class="remove">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let transaction; columns: displayedColumns;">
+        </tr>
+      </table>
+      <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">{{'MESSAGE.NO_DATA' | translate}}</p>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </mat-tab>
+
+  <mat-tab label="{{'COMMON.DETAILS' | translate}}">
+    <app-transaction-component (saveEvent)="saveEventListener($event)"></app-transaction-component>
+  </mat-tab>
+
+</mat-tab-group>

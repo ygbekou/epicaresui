@@ -1,0 +1,27 @@
+<div class="px-3">
+    <div class="theme-container"> 
+
+        <div class="get-in-touch bg-primary" ngClass.lt-md="mt-3">
+            
+            <img src="assets/images/others/contact_bottom.jpg" alt="operator" fxShow="false" fxShow.gt-xs>
+
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="content" ngClass.xs="p-0"> 
+                <div fxLayout="column" class="p-3">
+                    <h2>{{'COMMON.KNOW_MORE'|translate}}</h2>
+                    <p class="mb-0">{{'COMMON.CALL_OR_WRITE'|translate}}</p>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" class="p-3">
+                    <mat-icon class="mat-icon-xlg mx-2">call</mat-icon>
+                    <div fxLayout="column">               
+                        <p class="mb-0">{{'COMMON.CALL_NOW'|translate}}</p>
+                        <h2 class="ws-nowrap">{{appService.company.phone}}</h2>
+                    </div>
+                </div>
+                <div class="p-3">
+                    <a mat-flat-button routerLink="/contact" class="mx-3 uppercase">{{'COMMON.CONTACT_US'|translate}}</a>
+                </div>
+            </div>  
+        </div>
+
+    </div>
+</div>

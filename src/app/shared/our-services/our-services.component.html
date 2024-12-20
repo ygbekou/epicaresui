@@ -1,0 +1,26 @@
+<div class="section mt-3">
+    <div class="px-3">
+        <div class="theme-container">
+            <h1 class="section-title">{{section.title}}</h1>
+            <div style="text-align: center; align-content: center; font-size: larger;" [innerHTML]="section.summary | safehtml"></div>
+            <br/>
+            <div fxLayout="row wrap" class="services-wrapper" style="height:500px;">
+                <img [src]="'assets/images/sections/'+section.id+'/'+section.picture" alt="mission"
+                    class="mw-100 d-block">
+            </div>
+            <br/>
+            <div fxLayout="row wrap" class="services-wrapper">
+                <div fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-sm="25" class="p-2" *ngFor="let item of sectionItems">
+                    <!-- <a [routerLink]="['/section', item.name]" style="text-decoration: none;">
+                    
+                    </a> -->
+                    <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-justify">
+                        <mat-icon class="mat-icon-xlg" color="primary">{{item.picture}}</mat-icon>
+                        <h2 class="capitalize fw-600 my-3">{{item.title}}</h2>
+                        <div [innerHTML]="item.description | safehtml"></div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

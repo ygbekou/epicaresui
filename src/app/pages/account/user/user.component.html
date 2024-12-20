@@ -1,0 +1,212 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <h2 class="text-muted text-center fw-600 mb-3">{{'COMMON.ACCOUNT_DETAILS' | translate}}</h2>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.FIRST_NAME' | translate}}<font color="red">*</font>
+          </mat-label>
+          <input matInput type="text" class="form-control" id="firstName" [(ngModel)]="user.firstName" name="firstName"
+            #firstName="ngModel" required>
+          <mat-error *ngIf="f.submitted && firstName.invalid" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.LAST_NAME' | translate}}<font color="red">*</font>
+          </mat-label>
+          <input matInput type="text" class="form-control" id="lastName" [(ngModel)]="user.lastName" name="lastName"
+            #lastName="ngModel" required>
+          <mat-error *ngIf="f.submitted && lastName.invalid" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.EMAIL' | translate}}<font color="red">*</font>
+          </mat-label>
+          <input matInput type="text" class="form-control" id="email" [(ngModel)]="user.email" name="email"
+            #email="ngModel" autocomplete="off" required email>
+          <mat-error *ngIf="f.submitted && email.invalid && email.errors.required" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }} </mat-error>
+          <mat-error *ngIf="f.submitted && email.invalid && email.errors.email" severity="error">
+            {{ 'VALIDATION.EMAIL_INVALID' | translate }} </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.PHONE' | translate}}<font color="red">*</font>
+          </mat-label>
+          <input matInput type="text" class="form-control" id="phone" [(ngModel)]="user.homePhone" name="homePhone"
+            #homePhone="ngModel" required>
+          <mat-error *ngIf="f.submitted && homePhone.invalid" severity="error">
+            {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-radio-group id="sex" class="form-control" [(ngModel)]="user.sex" name="sex" #sex="ngModel" required>
+          <mat-radio-button value="F">
+            {{'COMMON.MALE' | translate }}
+          </mat-radio-button>
+          <mat-radio-button value="M">
+            {{'COMMON.FEMALE' | translate }}
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field appearance="outline" class="w-100" *ngIf="tokenStorage.getRole() === '1'">
+          <mat-label>{{'COMMON.USER_TYPE' | translate }}</mat-label>
+          <mat-select placeholder="{{'COMMON.USER_TYPE' | translate }}" id="userGroup" name="userGroup"
+            [(ngModel)]="user.userGroup.id" #userGroup="ngModel" required>
+            <mat-option *ngFor="let userGroup of userGroups" [value]="userGroup.id">
+              {{userGroup.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="f.submitted && userGroup.invalid" severity="error">
+            {{'VALIDATION.USER_TYPE_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100" *ngIf="tokenStorage.getRole() === '1'">
+          <mat-label>{{'COMMON.POSITION' | translate }}</mat-label>
+          <mat-select placeholder="{{'COMMON.POSITION' | translate }}" id="position" [compareWith]="compareObjects"
+            name="position" [(ngModel)]="user.position" #position="ngModel">
+            <mat-option *ngFor="let posDesc of activePositions" [value]="posDesc.position">
+              {{posDesc.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!--
+        <div ngModelGroup="passwordGroup" password-matcher #passwordGroup="ngModelGroup"
+          *ngIf="tokenStorage.getRole() === '1'">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.PASSWORD' | translate}}<font color="red">*</font>
+            </mat-label>
+            <input matInput type="password" class="form-control" id="password" [(ngModel)]="user.password"
+              name="password" #password="ngModel" autocomplete="off" required>
+            <mat-error *ngIf="f.submitted && password.invalid" severity="error">
+              {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.CONFIRM_PASSWORD' | translate}}<font color="red">*</font>
+            </mat-label>
+            <input matInput type="password" class="form-control" id="confirmPassword" [(ngModel)]="user.confirmPassword"
+              name="confirmPassword" #confirmPassword="ngModel" autocomplete="off" required>
+            <mat-error *ngIf="f.submitted && confirmPassword.invalid" severity="error">
+              {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-error *ngIf="passwordGroup.control?.errors" [ngStyle]="{'color': '#ff5252'}">
+            <div [hidden]="!passwordGroup.control?.errors.noMatch">Passwords do not match</div>
+          </mat-error>
+        </div>
+
+      -->
+
+        <mat-slide-toggle [(ngModel)]="user.useCompanyContact" name="useCompanyContact" #useCompanyContact="ngModel"
+          class="my-2">
+          {{ 'COMMON.USE_COMPANY_CONTACT' | translate }}
+        </mat-slide-toggle>
+
+        <br />
+        <mat-slide-toggle [(ngModel)]="user.status" name="status" #status="ngModel" class="my-2">
+          {{ 'COMMON.ENABLE' | translate }}
+        </mat-slide-toggle>
+
+        <br />
+
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3" ngClass.sm="mt-2" ngClass.xs="mt-2">
+        <h2 class="text-muted text-center fw-600 mb-3">{{'COMMON.SOCIAL_MEDIA' | translate}}</h2>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.COMPANY' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="companyName" [(ngModel)]="user.companyName"
+            name="companyName" #companyName="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.FACEBOOK' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="facebook" [(ngModel)]="user.facebook" name="facebook"
+            #facebook="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.TWITTER' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="twitter" [(ngModel)]="user.twitter" name="twitter"
+            #twitter="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.LINKEDIN' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="linkedin" [(ngModel)]="user.linkedin" name="linkedin"
+            #linkedin="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.INSTAGRAM' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="instagram" [(ngModel)]="user.instagram" name="instagram"
+            #instagram="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.WEBSITE' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="website" [(ngModel)]="user.website" name="website"
+            #website="ngModel">
+        </mat-form-field>
+
+        <br />
+        <h2 class="text-muted text-left fw-600 mb-3">{{'COMMON.MY_PHOTO'|translate}}</h2>
+
+        <input-file [(ngModel)]="picture" name="gallery" #gallery="ngModel" fileLimit="1" fileAccept="image/*"
+          [linkEnabled]="true">
+        </input-file>
+      </div>
+
+      <br />
+
+      <mat-tab-group>
+        <mat-tab label="{{'COMMON.OTHERS' | translate}} - {{flag.name}}"
+          *ngFor="let flag of appService.flags; let i = index">
+          <div fxLayout="row wrap">
+            <mat-label> {{'COMMON.SHORT_RESUME' | translate}}</mat-label>
+            <quill-editor matInput type="text" class="form-control" id="shortResume{{i}}"
+              [(ngModel)]="user.userDescs[i].shortResume" name="shortResume{{i}}" #shortResume="ngModel" required>
+            </quill-editor>
+          </div>
+          <br/>
+          <br/>
+          <div fxLayout="row wrap">
+            <mat-label> {{'COMMON.ABOUT_ME' | translate}}</mat-label>
+            <quill-editor matInput type="text" class="form-control" id="resume{{i}}"
+              [(ngModel)]="user.userDescs[i].resume" name="resume{{i}}" #resume="ngModel" required></quill-editor>
+          </div>
+
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+    <div class="text-center mt-2" *ngIf="messages && hasError">
+      <p style="color:#ff5252">{{messages}}</p>
+    </div>
+    <div class="text-center mt-2" *ngIf="messages && !hasError">
+      <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

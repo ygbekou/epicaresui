@@ -1,0 +1,43 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid" #f="ngForm" validate>
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="40" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.NAME' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="title" [(ngModel)]="cmessage.name" name="name"
+                  #name="ngModel" readonly>
+        </mat-form-field>
+        <!-- <mat-label> {{cmessage.name}}</mat-label> -->
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="40" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.EMAIL' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="email" [(ngModel)]="cmessage.email" name="email"
+                  #email="ngModel" readonly>
+        </mat-form-field>
+        <!-- <mat-label> {{cmessage.email}}</mat-label> -->
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="20" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.PHONE' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="phone" [(ngModel)]="cmessage.phone" name="phone"
+                  #phone="ngModel" readonly>
+        </mat-form-field>
+        <!-- <mat-label> {{cmessage.phone}}</mat-label> -->
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.MESSAGE' | translate}}</mat-label>
+          <textarea matInput type="text" class="form-control" id="message" [(ngModel)]="cmessage.message" name="message" 
+            #message="ngModel" rows="10" readonly></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    
+  </form>
+
+</div>

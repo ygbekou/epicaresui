@@ -1,0 +1,31 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/about.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="true" title="{{'COMMON.ABOUT_US' | translate}}" desc="{{appService.company.bannerContentParagraph}}">
+</app-header-image-small>
+<div class="theme-container">
+    <mat-card class="main-content-header">
+        <div class="section pt-2">
+            <div class="px-3">
+                <div class="theme-container">
+                    <h1 class="section-title">{{section.title}}</h1>
+                    <mat-card class="p-0" fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-md="60" class="p-3">
+                            <div [innerHTML]="section.description | safehtml"></div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-md="40" fxShow="false" fxShow.gt-md>
+                            <img [src]="'assets/images/sections/'+section.id+'/'+section.picture" alt="{{section.name}}"
+                                class="mw-100 d-block">
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>
+
+<app-our-team></app-our-team>
+
+<app-mission></app-mission>
+
+<app-our-partners></app-our-partners>
+
+<app-get-in-touch></app-get-in-touch>

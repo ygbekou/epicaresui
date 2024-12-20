@@ -1,0 +1,166 @@
+
+
+
+<mat-card *ngFor="let pollQuestionDesc of pollQuestionDescs">
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+    {{pollQuestionDesc.description}}
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+    <button mat-icon-button color="primary" (click)="edit(pollQuestionDesc.pollQuestion.id)" type="button"
+        matTooltip="{{'COMMON.EDIT' | translate}}" class="remove">
+        <mat-icon color="primary" class="mat-icon-xlg">edit</mat-icon>
+    </button>
+  </div>
+</div>
+</mat-card>
+
+
+<form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+      <button mat-icon-button color="primary" (click)="clear()" type="button"
+          matTooltip="{{'COMMON.ADD' | translate}}" class="remove">
+          <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+      </button>
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="90" fxFlex.lg="90" fxFlex.xl="90" class="p-3">
+      <div class="text-center mt-2">
+        <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+        </button> 
+      </div>
+      <div class="text-center mt-2" *ngIf="messages">
+        <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+      </div>
+      <div *ngFor="let flag of appService.flags; let i = index">
+        <mat-error *ngIf="f.submitted && (pollQuestion.pollQuestionDescs[i].description === undefined 
+          || pollQuestion.pollQuestionDescs[i].description === '')" severity="error">
+            {{'COMMON.DESCRIPTION' | translate }} {{'VALIDATION.IS_REQUIRED' | translate }} - {{flag.name}}
+        </mat-error>
+
+        <div fxLayout="row wrap" *ngFor="let pollChoice of pollQuestion.pollChoices;">
+          <mat-error *ngIf="f.submitted && (pollChoice.pollChoiceDescs[i].description === undefined 
+            || pollChoice.pollChoiceDescs[i].description === '')" severity="error">
+              {{'COMMON.CHOICE' | translate }} - {{ i + 1}} : {{'COMMON.DESCRIPTION' | translate }} {{'VALIDATION.IS_REQUIRED' | translate }} - {{flag.name}}
+          </mat-error>
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>{{'COMMON.POSITION' | translate }}</mat-label>
+      <mat-select placeholder="{{'COMMON.POSITION' | translate }}" id="position" [compareWith]="compareObjects"
+        name="position" [(ngModel)]="pollQuestion.position" #position="ngModel" required>
+        <mat-option *ngFor="let posDesc of activePositions" [value]="posDesc.position">
+          {{posDesc.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="f.submitted && position.invalid" severity="error">
+          {{'VALIDATION.FIELD_REQUIRED' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+    <mat-form-field appearance="outline" class="w-100" >
+      <mat-label> {{'COMMON.RANK' | translate}}</mat-label>
+      <input matInput type="text" class="form-control" id="rank" [(ngModel)]="pollQuestion.rank" name="rank" #rank="ngModel" required>
+      <mat-error *ngIf="f.submitted && rank.invalid" severity="error">
+          {{'VALIDATION.FIELD_REQUIRED' | translate }}
+      </mat-error>
+
+    </mat-form-field>
+  </div>
+</div>
+
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let flag of appService.flags; let i = index" 
+                      (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+      {{'COMMON.CLICK_HERE_FOR' | translate}} - {{flag.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    
+    <div fxLayout="row wrap">
+      <mat-form-field appearance="outline" class="w-100" >
+          <mat-label> {{'COMMON.DESCRIPTION' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="description{{i}}" 
+          [(ngModel)]="pollQuestion.pollQuestionDescs[i].description" name="description{{i}}" required>
+          <mat-error *ngIf="f.submitted && (pollQuestion.pollQuestionDescs[i].description === undefined 
+            || pollQuestion.pollQuestionDescs[i].description === '')" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+      </mat-form-field>
+      <div fxFlex="5"></div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion> 
+
+
+<br/>
+<br/>
+</form>
+
+<fieldset>
+  <legend>
+    <h5 style="color:#00008b">{{'COMMON.CHOICES' | translate}}</h5>
+  </legend>
+  
+  <div fxLayout="row wrap" *ngFor="let pollChoice of pollQuestion.pollChoices;">
+    <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100" >
+          <mat-label> {{'COMMON.RANK' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="rank" [(ngModel)]="pollChoice.rank" name="rank" required>
+          <mat-error *ngIf="f.submitted && (pollChoice.rank === undefined)" severity="error">
+                {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100" >
+          <mat-label>{{'COMMON.USER' | translate }}</mat-label>
+          <mat-select placeholder="{{'COMMON.USER' | translate }}" id="user" [compareWith]="compareObjects"
+            name="user" [(ngModel)]="pollChoice.user" #user="ngModel">
+            <mat-option *ngFor="let u of activeUsers" [value]="u">
+              {{u.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="50" *ngFor="let flag of appService.flags; let i = index">
+      <mat-card>
+        <mat-form-field appearance="outline" class="w-100" >
+            <mat-label> {{'COMMON.DESCRIPTION' | translate}} - {{flag.name}}</mat-label>
+            <input matInput type="text" class="form-control" id="description{{i}}" 
+            [(ngModel)]="pollChoice.pollChoiceDescs[i].description" name="description{{i}}" required>
+            <mat-error *ngIf="f.submitted && (pollChoice.pollChoiceDescs[i].description === undefined 
+              || pollChoice.pollChoiceDescs[i].description === '')" severity="error">
+                {{'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+  <div fxLayout="row wrap">
+    <button mat-icon-button color="primary" (click)="addChoice()" type="button"
+        matTooltip="{{'COMMON.ADD' | translate}}" class="remove">
+        <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+    </button>
+  </div>
+  <br/>
+  <br/>
+</fieldset>
+

@@ -1,0 +1,192 @@
+<div class="table-wrapper">
+
+  <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+    <mat-tab-group>
+      <mat-tab label="{{'COMMON.PROJECT' | translate}}">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+            <a (click)="clear()" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+              <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+            </a>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="15" class="p-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'COMMON.BUDGET' | translate}}
+              </mat-label>
+              <input matInput type="text" class="form-control" id="budget" [(ngModel)]="project.budget" name="budget"
+                #budget="ngModel" required>
+              <mat-error *ngIf="f.submitted && budget.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" fxFlex.gt-sm="15" class="p-3">
+            <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [(ngModel)]="project.status"
+              (change)="onToggleGroupChange($event)">
+              <mat-button-toggle [value]="0">
+                {{'COMMON.SUBMITTED' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="1">
+                {{'COMMON.IN_REVIEW' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="5">
+                {{'COMMON.APPROVED' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="10">
+                {{'COMMON.IN_PROGRESS' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="90">
+                {{'COMMON.COMPLETED' | translate}}
+              </mat-button-toggle>
+              <mat-button-toggle [value]="99">
+                {{'COMMON.REJECTED' | translate}}
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap">
+
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.PROJECTED_START_DATE' | translate}}</mat-label><br />
+              <input matInput [matDatepicker]="projectedStartDatePicker" class="form-control" id="projectedStartDate"
+                [(ngModel)]="project.projectedStartDate" name="projectedStartDate" #projectedStartDate="ngModel"
+                required>
+              <mat-datepicker-toggle matSuffix [for]="projectedStartDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #projectedStartDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.PROJECTED_END_DATE' | translate}}</mat-label><br />
+              <input matInput [matDatepicker]="projectedEndDatePicker" class="form-control" id="projectedEndDate"
+                [(ngModel)]="project.projectedEndDate" name="projectedEndDate" #projectedEndDate="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="projectedEndDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #projectedEndDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.START_DATE' | translate}}</mat-label><br />
+              <input matInput [matDatepicker]="startDatePicker" class="form-control" id="startDate"
+                [(ngModel)]="project.startDate" name="startDate" #startDate="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.END_DATE' | translate}}</mat-label><br />
+              <input matInput [matDatepicker]="endDatePicker" class="form-control" id="endDate"
+                [(ngModel)]="project.endDate" name="endDate" #endDate="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <mat-tab-group>
+          <mat-tab label="{{'COMMON.OTHERS' | translate}} - {{flag.name}}"
+            *ngFor="let flag of appService.flags; let i = index">
+            <div fxLayout="row">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label> {{'COMMON.TITLE' | translate}} - {{flag.name}}</mat-label>
+                <input matInput type="text" class="form-control" id="title{{i}}"
+                  [(ngModel)]="project.projectDescs[i].title" name="title{{i}}" #title="ngModel" required>
+                <mat-error *ngIf="f.submitted && title.invalid" severity="error">
+                  {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                </mat-error>
+              </mat-form-field>
+              <div fxFlex="5"></div>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.DESCRIPTION' | translate}} - {{flag.name}}</mat-label>
+
+              <quill-editor class="form-control" id="description{{i}}" [(ngModel)]="project.projectDescs[i].description"
+                name="description{{i}}" #description="ngModel" required>
+              </quill-editor>
+              <mat-error *ngIf="f.submitted && description.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.EXISTING' | translate}}<font color="red">*</font>
+              </mat-label>
+              <quill-editor class="form-control" id="existant{{i}}" [(ngModel)]="project.projectDescs[i].existant"
+                name="existant{{i}}" #existant="ngModel" required></quill-editor>
+              <mat-error *ngIf="f.submitted && existant.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.OBJECTIF' | translate}}<font color="red">*</font>
+              </mat-label>
+              <quill-editor class="form-control" id="objectif" [(ngModel)]="project.projectDescs[i].objectif"
+                name="objectif" #objectif="ngModel" required></quill-editor>
+              <mat-error *ngIf="f.submitted && objectif.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.DURATION' | translate}}<font color="red">*</font>
+              </mat-label>
+              <quill-editor class="form-control" id="duration" [(ngModel)]="project.projectDescs[i].duration"
+                name="duration" #duration="ngModel" required></quill-editor>
+              <mat-error *ngIf="f.submitted && duration.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.BUDGET_ESTIMATION' | translate}}<font color="red">*</font>
+              </mat-label>
+              <quill-editor class="form-control" id="budgetLine" [(ngModel)]="project.projectDescs[i].budgetLine"
+                name="budgetLine" #budgetLine="ngModel" required></quill-editor>
+              <mat-error *ngIf="f.submitted && budgetLine.invalid" severity="error">
+                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+              </mat-error>
+            </div>
+            <div fxLayout="row wrap">
+              <mat-label> {{'COMMON.SPONSORS' | translate}}<font color="red">*</font>
+              </mat-label>
+              <quill-editor class="form-control" id="sponsors" [(ngModel)]="project.projectDescs[i].sponsors"
+                name="sponsors" #sponsors="ngModel"></quill-editor>
+            </div>
+
+          </mat-tab>
+        </mat-tab-group>
+
+
+      </mat-tab>
+      <mat-tab label="{{'COMMON.PICTURE' | translate}}">
+        <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+          <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}</span><span
+              class="text-muted mx-3">(max: 8 images)</span></p>
+          <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="8" fileAccept="image/*"
+            [linkEnabled]="false" multiple>
+          </input-file>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <br />
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button> </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

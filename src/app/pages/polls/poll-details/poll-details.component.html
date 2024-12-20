@@ -1,0 +1,85 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/polls.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="false" desc="{{ 'COMMON.POLL_AND_ELECTION' | translate }}"
+    [contentMinHeight]="200">
+</app-header-image-small>
+
+<div class="px-3">
+
+    <div class="theme-container">
+        <mat-sidenav-container class="all-properties mt-3">
+            <mat-sidenav-content ngClass.gt-sm="distance">
+
+                <div fxLayout="row wrap" class="properties-wrapper mt-0">
+
+                    <div fxFlex="100" fxLayoutAlign="start start" class="p-2">
+                        <mat-chip-list [ngClass]="(settings.rtl) ? 'ml-2' : 'mr-2'">
+                            <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                {{ pagination?.total }} {{'COMMON.QUESTIONS'|translate}}s
+                            </mat-chip>
+                        </mat-chip-list>
+                        <app-blogs-search-results-filters [searchFields]="searchFields"
+                            (onRemoveSearchField)="removeSearchField($event)">
+                        </app-blogs-search-results-filters>
+                    </div>
+
+                    <div *ngFor="let pollQuestionDesc of pollQuestionDescs"
+                        [fxFlex]="(viewType=='grid') ? viewCol : 100" class="item">
+                        <mat-card class="property-item p-0" fxLayout="row wrap" style="display: block;">
+
+                            <div fxFlex="100" [fxFlex.gt-sm]="(viewType=='list') ? 60 : 100"
+                                [fxFlex.sm]="(viewType=='list') ? 50 : 100" class="p-3">
+
+                                <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
+                                    <mat-card-content class="mb-0">
+                                        <a color="accent" style="width: 100%; text-decoration: none;"
+                                            [routerLink]="['/poll-question-details/scrutin', pollQuestionDesc.pollQuestion.id]">
+                                            <h4 class="title">
+                                                <span>N<sup>o</sup>:<span
+                                                        class="fw-500 mx-2">{{pollQuestionDesc.pollQuestion?.id |number:'3.0'}}</span></span>
+                                                </h4>
+                                        </a>
+                                        <hr />
+
+                                        <div fxShow="false" fxShow.gt-sm class="mt-3">
+                                            <div [innerHTML]="pollQuestionDesc.description | safehtml"></div>
+                                        </div>
+
+                                    </mat-card-content>
+                                    <div class="sticky-footer-helper" fxFlex="grow"></div>
+                                    <mat-card-actions class="m-0 p-0" fxLayoutAlign="space-between center">
+                                        <p fxLayout="row" class="date mb-0">
+                                            <mat-icon class="text-muted">date_range</mat-icon>
+                                            <span
+                                                class="mx-2">{{pollQuestionDesc.createDate | date:"dd MMMM, yyyy" }}</span>
+                                        </p>
+                                        <div>
+                                            <a [routerLink]="['/poll-question-details/scrutin', pollQuestionDesc?.pollQuestion?.id]"
+                                                mat-stroked-button color="primary" class="uppercase" *ngIf="pollQuestionDesc.pollQuestion.poll.status ===  1">
+                                                {{'COMMON.READ_MORE'|translate }}</a>
+                                            <a [routerLink]="['/poll-question-details/results', pollQuestionDesc?.pollQuestion?.id]" mat-stroked-button
+                                                color="primary" class="uppercase" *ngIf="pollQuestionDesc.pollQuestion.poll.status >  1">
+                                                {{'COMMON.RESULTS'|translate }}</a>
+                                        </div>
+                                    </mat-card-actions>
+                                </div>
+
+                            </div>
+
+                        </mat-card>
+                    </div>
+                    <div *ngIf="pollQuestionDescs?.length == 0" fxFlex="100" fxLayoutAlign="center center"
+                        [style.min-height.px]="200">
+                        <mat-spinner *ngIf="!message"></mat-spinner>
+                        <mat-chip-list *ngIf="message">
+                            <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                {{message}}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+</div>
+<app-get-in-touch></app-get-in-touch>

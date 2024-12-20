@@ -1,0 +1,92 @@
+<div class="theme-container" *ngIf="action === 'submitting'">
+  <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-3">
+        <div class="text-center mt-2">
+          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+            <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.FIRST_NAME' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="firstName" [(ngModel)]="jobAppli.firstName"
+            name="firstName" #firstName="ngModel" required>
+          <mat-error *ngIf="f.submitted && firstName.invalid" severity="error">
+            {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.LAST_NAME' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="lastName" [(ngModel)]="jobAppli.lastName" name="lastName"
+            #lastName="ngModel" required>
+          <mat-error *ngIf="f.submitted && lastName.invalid" severity="error">
+            {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.MIDDLE_NAME' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="middleName" [(ngModel)]="jobAppli.middleName"
+            name="middleName" #middleName="ngModel">
+        </mat-form-field>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.PHONE' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="phone" [(ngModel)]="jobAppli.phone" name="phone"
+            #phone="ngModel" required>
+          <mat-error *ngIf="f.submitted && phone.invalid" severity="error">
+            {{'VALIDATION.FIELD_REQUIRED' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.EMAIL' | translate}}</mat-label>
+          <input matInput type="text" class="form-control" id="email" [(ngModel)]="jobAppli.email" name="email"
+            #email="ngModel" required>
+        </mat-form-field>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+        <mat-label> {{'COMMON.RESUME' | translate}} ({{'COMMON.CLICK_TO_DOWNLOAD' | translate}})</mat-label>
+        <br />
+        <a href="assets/docs/jobapplis/{{jobAppli.id}}/{{jobAppli.doc}}" download>
+          <img src="assets/docs/jobapplis/{{jobAppli.id}}/{{jobAppli.doc}}" style="height: 100px; width: 200px;"
+            alt="{{'COMMON.RESUME' | translate}}">
+        </a>
+      </div>
+    </div>
+    <br />
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="p-1">
+        <p>
+          <mat-label> {{'COMMON.NOTES' | translate}}</mat-label>
+        </p>
+        <quill-editor class="form-control" id="notes" [(ngModel)]="jobAppli.notes" name="notes" #notes="ngModel">
+        </quill-editor>
+      </div>
+    </div>
+  </form>
+  <br />
+</div>
+
+<div class="theme-container" *ngIf="action === 'success'">
+  <h2>{{'COMMON.RESUME_SUBMISSION_SUCCESS' | translate}}</h2>
+</div>

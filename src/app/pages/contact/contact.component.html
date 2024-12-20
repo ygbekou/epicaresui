@@ -1,0 +1,86 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/contact.jpg'" 
+                  [bgImageAnimate]="false" 
+                  [contentOffsetToTop]="true"                
+                  [title]="'COMMON.CONTACT_US'|translate"
+                  [desc]="'MESSAGE.HAVE_QUESTION'|translate">
+</app-header-image-small>
+
+<div class="px-3">
+
+    <div class="theme-container">
+        <mat-card class="main-content-header mb-5">
+            
+            <div fxLayout="row wrap" fxLayoutAlign="space-around">
+                <div fxFlex="100" fxFlex.gt-xs="33.3">
+                    <div fxLayout="column" fxLayoutAlign="center center" class="text-center">
+                        <mat-icon color="primary" class="mat-icon-lg">home</mat-icon>
+                        <h3 class="primary-color py-1">{{'COMMON.ADDRESS'|translate}} :</h3>
+                        <span>{{appService.company.address}} </span>
+                    </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.3" ngClass.xs="mt-2">
+                    <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-icon color="primary" class="mat-icon-lg">call</mat-icon>
+                        <h3 class="primary-color py-1">{{'COMMON.PHONE'|translate}} :</h3>
+                        <span>{{appService.company.phone}}</span> 
+                    </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.3" ngClass.xs="mt-2">
+                    <div fxLayout="column" fxLayoutAlign="center center">
+                        <mat-icon color="primary" class="mat-icon-lg">mail_outline</mat-icon>
+                        <h3 class="primary-color py-1">E-MAIL :</h3>
+                        <span>{{appService.company.email}}</span> 
+                    </div>
+                </div>
+                <div class="divider w-100 mt-3"></div>
+                <h3 class="w-100 text-center py-3">{{'COMMON.CONTACT_US'|translate}}</h3>
+                
+                <form [formGroup]="contactForm" (ngSubmit)="onContactFormSubmit(contactForm.value)" fxLayout="row wrap">
+                    <div fxFlex="100" fxFlex.gt-sm="33.3" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>{{'COMMON.NAME'|translate}}</mat-label>
+                            <input matInput placeholder="Name" formControlName="name" required>
+                            <mat-error *ngIf="contactForm.controls.name.errors?.required">{{'VALIDATION.NAME_REQUIRED'|translate}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-sm="33.3" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="Email" formControlName="email" required>
+                            <mat-error *ngIf="contactForm.controls.email.errors?.required">{{'VALIDATION.EMAIL_REQUIRED'|translate}}</mat-error>
+                            <mat-error *ngIf="contactForm.controls.email.hasError('invalidEmail')">{{'VALIDATION.EMAIL_INVALID'|translate}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-sm="33.3" class="px-1" ngClass.sm="mt-1" ngClass.xs="mt-1">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>{{'COMMON.PHONE'|translate}}</mat-label>
+                            <input matInput placeholder="Phone" formControlName="phone"> 
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" class="px-1 mt-1">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Message</mat-label> 
+                            <textarea matInput placeholder="Message" formControlName="message" required rows="7"></textarea> 
+                            <mat-error *ngIf="contactForm.controls.message.errors?.required">{{'VALIDATION.MESSAGE_REQUIRED'|translate}}</mat-error>
+                        </mat-form-field>
+                    </div> 
+                    <div class="w-100 py-2 text-center">
+                        <div class="text-center mt-2" *ngIf="messages">
+                            <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+                        </div>
+                        <button mat-raised-button color="primary" type="submit" class="uppercase">{{'MESSAGE.SEND_MESSAGE'|translate}}</button>
+                    </div> 
+                </form> 
+            
+            </div> 
+            
+           <!--  <div class="mt-5 contact-map">
+                <agm-map [latitude]="45.4765" [longitude]="-75.7013" [zoom]="zoom" [mapTypeControl]="true" [fullscreenControl]="true">
+                    <agm-marker [latitude]="45.4765" [longitude]="-75.7013" [markerDraggable]="false" ></agm-marker>
+                </agm-map>
+            </div> -->
+
+        </mat-card>  
+    </div>
+
+</div>

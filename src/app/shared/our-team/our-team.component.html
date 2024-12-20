@@ -1,0 +1,41 @@
+
+<div class="section mt-3"  *ngIf="section.id>0">
+    <div class="px-3">
+        <div class="theme-container">
+            <h1 class="section-title">{{section.title}}</h1>
+            <div fxLayout="row wrap" class="services-wrapper">
+                <div fxFlex="100" fxFlex.gt-md="20" fxFlex.gt-sm="50" class="p-2" *ngFor="let item of sectionItems">
+                    <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-center">
+                        <mat-icon class="mat-icon-xlg" color="primary">{{item.picture}}</mat-icon>
+                        <h2 class="capitalize fw-600 my-3">{{item.title}}</h2>
+                        <div [innerHTML]="item.description | safehtml"></div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="agents-carousel"  *ngIf="section.id>0">
+    <div class="swiper-container h-100 carousel-outer" [swiper]="config">
+        <div class="swiper-wrapper h-100">
+
+            <div *ngFor="let item of sectionItems" class="swiper-slide">
+              <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-center">
+                        <mat-icon class="mat-icon-xlg" color="primary">{{item.picture}}</mat-icon>
+                        <h2 class="capitalize fw-600 my-3">{{item.title}}</h2>
+                        <div [innerHTML]="item.description"></div>
+                    </mat-card>
+            </div> 
+
+        </div>
+        <button mat-mini-fab color="primary" class="swiper-button-prev swipe-arrow">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" class="swiper-button-next swipe-arrow">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+</div>
+-->

@@ -1,0 +1,173 @@
+<form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+      <button mat-icon-button color="primary" (click)="clear()" type="button" matTooltip="{{'COMMON.ADD' | translate}}"
+        class="remove">
+        <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+      </button>
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-3">
+      <div class="text-center mt-2">
+        <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+          <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="text-center mt-2" *ngIf="messages">
+        <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+      </div>
+    </div>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="{{'COMMON.EVENT' | translate}}">
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-1">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.RANK' | translate}}</mat-label>
+            <input matInput type="text" class="form-control" id="rank" [(ngModel)]="event.rank" name="rank"
+              #rank="ngModel" required>
+            <mat-error *ngIf="f.submitted && rank.invalid" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label> {{'COMMON.LOCATION' | translate}}</mat-label>
+            <input matInput type="text" class="form-control" id="location" [(ngModel)]="event.location" name="location"
+              #location="ngModel" required>
+            <mat-error *ngIf="f.submitted && location.invalid" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-1">
+          <mat-slide-toggle [(ngModel)]="event.status" name="status" #status="ngModel" class="my-2">
+            {{ 'COMMON.STATUS' | translate }}
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" class="p-1">
+          <mat-form-field class="w-100">
+            <mat-label> {{'COMMON.START_DATE' | translate}}</mat-label><br />
+            <input matInput [matDatepicker]="beginDatePicker" class="form-control" id="beginDate"
+              [(ngModel)]="event.beginDate" name="beginDate" #beginDate="ngModel" required>
+            <mat-datepicker-toggle matSuffix [for]="beginDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #beginDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5">
+          <mat-form-field class="w-10" style="display: inline !important;">
+            <br />
+            <mat-select placeholder="HH" id="beginHr" name="beginHr" [(ngModel)]="event.beginHour" #beginHrs="ngModel"
+              (selectionChange)="hourSelectionChange($event)"  required>
+              <mat-option *ngFor="let hr of hours" [value]="hr">
+                {{hr}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="2" fxFlex.lg="2" fxFlex.xl="2" class="p-1"></div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5">
+          <mat-form-field class="w-10" style="display: inline !important;">
+            <br />
+            <mat-select placeholder="MM" id="beginMn" name="beginMn" [(ngModel)]="event.beginMinute" #beginMn="ngModel"
+              (selectionChange)="minuteSelectionChange($event)" required>
+              <mat-option *ngFor="let minute of minutes" [value]="minute">
+                {{minute}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="10" fxFlex.lg="10" fxFlex.xl="10" class="p-1"></div>
+
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" class="p-1">
+          <mat-form-field class="w-100">
+            <mat-label> {{'COMMON.END_DATE' | translate}}</mat-label><br />
+            <input matInput [matDatepicker]="endDatePicker" class="form-control" id="endDate"
+              [(ngModel)]="event.endDate" name="endDate" #endDate="ngModel" required>
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5">
+          <mat-form-field class="w-10" style="display: inline !important;">
+            <br />
+            <mat-select placeholder="HH" id="endHr" name="endHr" [(ngModel)]="event.endHour" #endHrs="ngModel"
+              (selectionChange)="hourSelectionChange($event)"  required>
+              <mat-option *ngFor="let hr of hours" [value]="hr">
+                {{hr}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="2" fxFlex.lg="2" fxFlex.xl="2" class="p-1"></div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5">
+          <mat-form-field class="w-10" style="display: inline !important;">
+            <br />
+            <mat-select placeholder="MM" id="endMn" name="endMn" [(ngModel)]="event.endMinute" #endMn="ngModel"
+              (selectionChange)="minuteSelectionChange($event)" required>
+              <mat-option *ngFor="let minute of minutes" [value]="minute">
+                {{minute}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+        <mat-form-field appearance="outline" class="w-100" >
+          <mat-label>{{'COMMON.USER' | translate }}</mat-label>
+          <mat-select placeholder="{{'COMMON.USER' | translate }}" id="user" [compareWith]="compareObjects"
+            name="user" [(ngModel)]="event.coordinator" #user="ngModel">
+            <mat-option *ngFor="let u of activeUsers" [value]="u">
+              {{u.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      </div>
+
+      <mat-tab-group>
+        <mat-tab label="{{'COMMON.OTHERS' | translate}} - {{flag.name}}"
+          *ngFor="let flag of appService.flags; let i = index">
+          <div fxLayout="row">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'COMMON.TITLE' | translate}} - {{flag.name}}</mat-label>
+              <input matInput type="text" class="form-control" id="title{{i}}" [(ngModel)]="event.eventDescs[i].title"
+                name="title{{i}}" required>
+            </mat-form-field>
+            <div fxFlex="5"></div>
+          </div>
+          <div fxLayout="row">
+            <p>
+              <mat-label> {{'COMMON.DESCRIPTION' | translate}} - {{flag.name}}</mat-label>
+            </p>
+            <quill-editor class="form-control" id="description{{i}}" [(ngModel)]="event.eventDescs[i].description"
+              name="description{{i}}" #description="ngModel" required>
+            </quill-editor>
+            <mat-error *ngIf="f.submitted && description.invalid" severity="error">
+              {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </div>
+
+        </mat-tab>
+      </mat-tab-group>
+    </mat-tab>
+    <mat-tab label="{{'COMMON.PICTURE' | translate}}">
+      <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+        <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}</span><span
+            class="text-muted mx-3">(max: 25 images)</span></p>
+        <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="25" fileAccept="image/*"
+          [linkEnabled]="false" multiple>
+        </input-file>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</form>

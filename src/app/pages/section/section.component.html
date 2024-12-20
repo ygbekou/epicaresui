@@ -1,0 +1,42 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/about.jpg'" [bgImageAnimate]="false"
+    [contentOffsetToTop]="true"
+    title="{{section.title}}" [desc]="''">
+</app-header-image-small>
+<div class="theme-container">
+    <mat-card class="main-content-header">
+        <div class="section pt-2">
+            <div class="px-3">
+                <div class="theme-container">
+                    <mat-card class="p-0" fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-md="60" class="p-3">
+                           <div style="font-size: large;" [innerHTML]="section.description | safehtml"></div> 
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-md="40" fxShow="false" fxShow.gt-md>
+                            <img style="width: 100%;" [src]="'assets/images/sections/'+section.id+'/'+section.picture" alt="{{section.name}}"
+                                class="mw-100 d-block">
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</div>
+<div class="section mt-3">
+    <div class="px-3">
+        <div class="theme-container">
+            <div fxLayout="row wrap" class="services-wrapper">
+                <div fxFlex="100" fxFlex.gt-md="33.33" fxFlex.gt-sm="50" class="p-2" *ngFor="let item of sectionItems">
+                    <a [routerLink]="['/section', item.name]" style="text-decoration: none;">
+                        <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-center">
+                            <mat-icon class="mat-icon-xlg" color="primary">{{item.picture}}</mat-icon>
+                            <h2 class="capitalize fw-600 my-3">{{item.title}}</h2>
+                            <!--<div [innerHTML]="item.summary"></div> -->
+                        </mat-card>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-get-in-touch></app-get-in-touch>

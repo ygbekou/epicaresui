@@ -1,0 +1,75 @@
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}" autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+    <a [routerLink]="['/account/faq', 0]" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD_NEW' | translate}}">
+      <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+    </a>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+    
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let faq"> {{faq.id}} </td>
+    </ng-container>
+
+    <!-- Language Column -->
+    <ng-container matColumnDef="language">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.LANGUAGE' | translate}} </th>
+      <td mat-cell *matCellDef="let faq"> {{faq.language}} </td>
+    </ng-container>
+
+    <!-- Question Column -->
+    <ng-container matColumnDef="question">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.QUESTION' | translate}} </th>
+      <td mat-cell *matCellDef="let faq">{{faq.question}}</td>
+    </ng-container>
+
+    <!-- Answer Column -->
+    <!-- <ng-container matColumnDef="answer">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.ANSWER' | translate}} </th>
+      <td mat-cell *matCellDef="let faq"> {{faq.answer}} </td>
+    </ng-container> -->
+
+    <!-- Question Column -->
+    <ng-container matColumnDef="yesCount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.YES' | translate}} </th>
+      <td mat-cell *matCellDef="let faq">{{faq.yesCount}}</td>
+    </ng-container>
+
+    <!-- Answer Column -->
+    <ng-container matColumnDef="noCount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.NO' | translate}} </th>
+      <td mat-cell *matCellDef="let faq"> {{faq.noCount}} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let faq">
+        <a [routerLink]="['/account/faq', faq.id]" mat-icon-button color="primary"
+          matTooltip="{{'COMMON.EDIT' | translate}}">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <button mat-icon-button color="warn" (click)="remove(faq)" 
+          matTooltip="{{'COMMON.DELETE' | translate}}" class="remove">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let faq; columns: displayedColumns;">
+    </tr>
+  </table>
+  <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">No data available</p>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>

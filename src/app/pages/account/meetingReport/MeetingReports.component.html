@@ -1,0 +1,147 @@
+
+<mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="{{'COMMON.DETAILS' | translate}}">
+      <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+        <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+              <button mat-icon-button color="primary" (click)="clear()" type="button"
+                  matTooltip="{{'COMMON.ADD' | translate}}" class="remove">
+                  <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+              </button>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-3">
+              <div class="text-center mt-2">
+                <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+                    <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+                    <mat-icon>save</mat-icon>
+                </button> 
+              </div>
+              <div class="text-center mt-2" *ngIf="messages">
+              <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+              </div>
+            </div>
+        </div>
+
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.MEETING_DATE' | translate}}</mat-label><br />
+              <input matInput [matDatepicker]="meetingDatePicker" class="form-control" 
+                id="meetingDatePicker" [(ngModel)]="meetingReport.meetingDate"
+                name="meetingDatePicker" #meetingDatePicker="ngModel" required>
+              <mat-datepicker-toggle matSuffix [for]="meetingDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #meetingDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+            <mat-form-field class="w-100">
+              <mat-label> {{'COMMON.AUTHOR' | translate}}</mat-label><br />
+              <mat-select placeholder="{{'COMMON.AUTHOR' | translate }}" id="author" [compareWith]="compareObjects"
+                  name="author" [(ngModel)]="meetingReport.author" #author="ngModel" required>
+                  <mat-option *ngFor="let user of activeUsers" [value]="user">
+                    {{user.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.submitted && author.invalid" severity="error">
+                    {{'VALIDATION.REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+              <mat-slide-toggle [(ngModel)]="meetingReport.status" name="status" #status="ngModel" class="my-2">
+                  {{ 'COMMON.STATUS' | translate }}
+              </mat-slide-toggle>
+            </div>
+        </div>
+
+        <div fxLayout="row">
+            <div fxFlex="50" *ngFor="let flag of appService.flags; let i = index">
+              <mat-form-field appearance="outline" class="w-100" >
+                  <mat-label> {{'COMMON.TITLE' | translate}} - {{flag.name}}</mat-label>
+                  <input matInput type="text" class="form-control" id="name{{i}}" [(ngModel)]="meetingReport.meetingReportDescs[i].title" 
+                    name="name{{i}}" required>
+              </mat-form-field>
+              <div fxFlex="5"></div>
+            </div>
+        </div>
+
+        <div fxLayout="row wrap" *ngFor="let flag of appService.flags; let i = index">
+          <mat-label> {{'COMMON.MESSAGE' | translate}} - {{flag.name}}</mat-label>
+          <quill-editor class="form-control" id="message{{i}}" [(ngModel)]="meetingReport.meetingReportDescs[i].message" 
+          name="message{{i}}" required></quill-editor>
+        
+          <br/>
+          <br/>
+        </div>
+      </form>
+    </mat-tab>
+
+    
+    <mat-tab label="{{'COMMON.LIST' | translate}}">
+       <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="90" class="p-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}"
+                autocomplete="off">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="text-center mt-2" *ngIf="messages">
+          <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+        </div>
+
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="meetingDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.MEETING_DATE' | translate}} </th>
+              <td mat-cell *matCellDef="let meetingReportDesc"> {{meetingReportDesc.meetingReport.meetingDate | date: 'mediumDate'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}} </th>
+              <td mat-cell *matCellDef="let meetingReportDesc"> {{meetingReportDesc.title}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.AUTHOR' | translate}} </th>
+              <td mat-cell *matCellDef="let meetingReportDesc"> {{meetingReportDesc.authorName}} </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.STATUS' | translate}} </th>
+              <td mat-cell *matCellDef="let meetingReportDesc">
+                {{meetingReportDesc?.meetingReport?.status === 1 ? ('COMMON.ACTIVE'| translate):('COMMON.INACTIVE'| translate)}} 
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let meetingReportDesc">
+              <button mat-icon-button color="primary" (click)="getDescriptions(meetingReportDesc.meetingReport.id)" 
+              matTooltip="{{'COMMON.EDIT' | translate}}"
+                class="remove">
+                <mat-icon>edit</mat-icon>
+              </button>
+              &nbsp;&nbsp;
+              <button mat-icon-button color="warn" (click)="remove(meetingReportDesc)" matTooltip="{{'COMMON.DELETE' | translate}}"
+                class="remove">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let meetingReportDesc; columns: displayedColumns;"
+              >
+            </tr>
+          </table>
+          <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">{{'MESSAGE.NO_DATA' | translate}}</p>
+        </div>
+        <mat-paginator [pageSize]="10"  [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </mat-tab>
+  </mat-tab-group>

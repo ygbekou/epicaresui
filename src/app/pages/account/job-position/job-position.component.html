@@ -1,0 +1,76 @@
+<form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+      <button mat-icon-button color="primary" (click)="clear()" type="button" matTooltip="{{'COMMON.ADD' | translate}}"
+        class="remove">
+        <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+      </button>
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-3">
+      <div class="text-center mt-2">
+        <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+          <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="text-center mt-2" *ngIf="messages">
+        <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row wrap">
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-1">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label> {{'COMMON.RANK' | translate}}</mat-label>
+        <input matInput type="text" class="form-control" id="rank" [(ngModel)]="jobPosition.rank" name="rank"
+          #rank="ngModel" required>
+        <mat-error *ngIf="f.submitted && rank.invalid" severity="error">
+          {{'VALIDATION.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="p-1">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label> {{'COMMON.LOCATION' | translate}}</mat-label>
+        <input matInput type="text" class="form-control" id="location" [(ngModel)]="jobPosition.location" name="location"
+          #location="ngModel" required>
+        <mat-error *ngIf="f.submitted && location.invalid" severity="error">
+          {{'VALIDATION.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field> 
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" class="p-1">
+      <mat-slide-toggle [(ngModel)]="jobPosition.status" name="status" #status="ngModel" class="my-2">
+        {{ 'COMMON.STATUS' | translate }}
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="{{'COMMON.TITLE' | translate}} - {{flag.name}}"
+      *ngFor="let flag of appService.flags; let i = index">
+      <div fxLayout="row">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label> {{'COMMON.TITLE' | translate}} - {{flag.name}}</mat-label>
+          <input matInput type="text" class="form-control" id="title{{i}}"
+            [(ngModel)]="jobPosition.jobPositionDescs[i].title" name="title{{i}}" required>
+        </mat-form-field>
+        <div fxFlex="5"></div>
+      </div>
+      <div fxLayout="row">
+        <p>
+          <mat-label> {{'COMMON.DESCRIPTION' | translate}} - {{flag.name}}</mat-label>
+        </p>
+        <quill-editor class="form-control" id="description{{i}}"
+          [(ngModel)]="jobPosition.jobPositionDescs[i].description" name="description{{i}}" #description="ngModel"
+          required>
+        </quill-editor>
+        <mat-error *ngIf="f.submitted && description.invalid" severity="error">
+          {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+</form>

@@ -1,0 +1,127 @@
+<app-header-image-small [backgroundImage]="'assets/images/others/about.jpg'" [bgImageAnimate]="false"
+  [contentOffsetToTop]="true" title="" desc="">
+</app-header-image-small>
+<div class="theme-container">
+  <mat-card class="main-content-header">
+    <div class="section pt-2">
+      <div class="px-3">
+        <div class="theme-container">
+     <!--      <div class="short-des" *ngIf="!poll && endNote" [innerHTML]="poll.endNote | safehtml"></div>
+          <div *ngIf="!started" class="short-des" [innerHTML]="poll.description | safehtml"></div>
+          <button mat-raised-button color="primary" (click)="startVote()" type="submit" class="uppercase"
+            *ngIf="!started && poll">{{'COMMON.START_VOTE'|translate}}</button>
+ -->
+          <!--      <mat-card class="p-0" fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-md="60" class="p-3" >
+              <div class="short-des" *ngIf="!poll && endNote" [innerHTML]="poll.endNote | safehtml"></div>
+              <div  *ngIf="!started && poll.description" class="short-des" [innerHTML]="poll.description | safehtml"></div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-md="40" fxShow="false" fxShow.gt-md>
+              <button mat-raised-button color="primary" (click)="startVote()" type="submit" class="uppercase"
+                *ngIf="!started && poll">{{'COMMON.START_VOTE'|translate}}</button>
+            </div>
+          </mat-card> -->
+
+          <div class="toggle toggle-primary" data-plugin-toggle="" style="width: 100%"
+            *ngIf="poll && pollQuestion && pollQuestion.id>0">
+           <!--  <h1>
+              <font color="red">
+                <strong>{{poll&&poll.pollTypeId==1?pollQuestion.position.name:pollQuestion.description}}</strong></font>
+            </h1> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div class="section mt-3">
+  <div class="px-3">
+    <div class="theme-container">
+      <div fxLayout="row wrap" class="services-wrapper">
+        <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-30 w-30 text-center" *ngFor="let pChoice of pollChoices">
+          <div fxLayout="row wrap" class="agent-wrapper">
+            <div fxFlex="100" fxFlex.gt-sm="33.3" fxFlex.gt-xs="50" class="p-3">
+              <img src="assets/images/members/{{pChoice.user.pic}}" [alt]="pChoice.user.lastName"
+                class="mw-100 d-block">
+              <img src="assets/images/members/{{pChoice.user.pic}}" class="icon-featured"
+                style="border: 2px solid #89b837; margin: -100px 0 -15px;">
+              <h4>{{pChoice.user.firstName +' '+pChoice.user.lastName}}</h4>
+              <p fxLayoutAlign="start center">
+                <mat-icon color="primary" matTooltip="Organization" matTooltipPosition="above">business</mat-icon><span
+                  class="mx-2">{{pChoice.user.companyName}}</span>
+              </p>
+              <p fxLayoutAlign="start center">
+                <mat-icon color="primary">email</mat-icon><span class="mx-2">{{pChoice.user.email}}</span>
+              </p>
+              <p fxLayoutAlign="start center">
+                <mat-icon color="primary">call</mat-icon><span class="mx-2">{{pChoice.user.homePhone}}</span>
+              </p>
+
+              <p class="uppercase fw-600 text-muted mt-5 mb-0">
+                <span [matBadge]="7" matBadgeOverlap="false">Nombre d'articles</span>
+              </p>
+            </div>
+            <div fxFlex="100" fxFlex.gt-sm="33.3" fxFlex.gt-xs="50" class="p-3">
+              <h2 class="fw-600">{{pChoice.user.firstName +' '+pChoice.user.lastName}}</h2>
+              <font size="0.9em" color="#777">{{'Village:'+pChoice.user.cityOrigin+', Residence:'+pChoice.user.cityResidence+','+pChoice.user.countryResidence.name
+									+(pChoice.user.occupation?', Occupation: '+
+									pChoice.user.occupation:'')+ (pChoice.user.domain?', Secteur:'+pChoice.user.domain.name:'')}} </font>
+            </div>
+            <div fxFlex="100" fxFlex.gt-sm="33.3" class="p-3">
+
+
+
+            </div>
+
+          </div>
+
+        </mat-card>
+
+      <div fxFlex="100" fxFlex.gt-md="33.33" fxFlex.gt-sm="50" class="p-2" *ngFor="let pChoice of pollChoices">
+          <a [routerLink]="['/section', '']" style="text-decoration: none;">
+            <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-center">
+              <img src="assets/images/members/{{pChoice.user.pic}}" class="icon-featured"
+                style="border: 2px solid #89b837; margin: -100px 0 -15px;">
+              <h2 class="capitalize fw-600 my-3">{{pChoice.user.lastName}}</h2>
+              <!--<div [innerHTML]="item.summary"></div> -->
+            </mat-card>
+          </a>
+        </div>
+      
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-sm-12" *ngFor="let pChoice of pollChoices">
+            <div class="featured-box featured-box-primary featured-box-effect-2"
+              style="height: 190px; margin-top: 40px;">
+              <div class="box-content" style="border-radius: 8px; padding: 30px 30px 10px 30px;">
+                <img src="assets/images/members/{{pChoice.user.pic}}" class="icon-featured"
+                  style="border: 2px solid #89b837; margin: -100px 0 -15px;">
+                <h4>{{pChoice.user.firstName +' '+pChoice.user.lastName}}</h4>
+              </div>
+              <div class="row text-left">
+                <div class="col-md-8 col-lg-8 ">
+                  <font size="0.9em" color="#777">{{'Village:
+									'+pChoice.user.cityOrigin+', Residence:
+									'+pChoice.user.cityResidence+',
+									'+pChoice.user.countryResidence.name
+									+(pChoice.user.occupation?', Occupation: '+
+									pChoice.user.occupation:'')+ (pChoice.user.domain?', Secteur:
+									'+pChoice.user.domain.name:'')}} </font>
+                </div>
+                <div class="col-md-4 col-lg-4 text-right">
+                  <button type="button" class="mb-1 mt-1 mr-1 btn btn-primary" (click)="vote(pChoice)"
+                    [disabled]="disabled">
+                    <i class="fa fa-thumbs-up"></i> Vote
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-get-in-touch></app-get-in-touch>

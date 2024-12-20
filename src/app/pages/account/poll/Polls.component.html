@@ -1,0 +1,179 @@
+<mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+
+  <mat-tab label="{{'COMMON.LIST' | translate}}">
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="90" class="p-1">
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}"
+            autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+        <button mat-icon-button color="primary" (click)="addNew()" type="button"
+          matTooltip="{{'COMMON.ADD' | translate}}" class="remove">
+          <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="text-center mt-2" *ngIf="messages">
+      <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+        <!-- Name Column -->
+
+        <ng-container matColumnDef="pollTypeDescName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.POLL_TYPE' | translate}} </th>
+          <td mat-cell *matCellDef="let pollDesc"> {{pollDesc.pollTypeDescName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}} </th>
+          <td mat-cell *matCellDef="let pollDesc"> {{pollDesc.title}} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.STATUS' | translate}} </th>
+          <td mat-cell *matCellDef="let pollDesc">
+            <span *ngIf="pollDesc.status === 0" style="color: #ff0000;">{{'COMMON.INACTIVE'|translate}}</span>
+            <span *ngIf="pollDesc.status === 1" style="color: #283593;">{{'COMMON.ACTIVE'|translate}}</span>
+            <span *ngIf="pollDesc.status === 2" style="color: green;">{{'COMMON.CLOSE'|translate}}</span>
+            <span *ngIf="pollDesc.status === 5" style="color: green;">{{'COMMON.TERMINATE'|translate}}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let pollDesc">
+            <button mat-icon-button color="primary" (click)="getDescriptions(pollDesc.poll.id)"
+              matTooltip="{{'COMMON.EDIT' | translate}}" class="remove">
+              <mat-icon>edit</mat-icon>
+            </button>
+            &nbsp;&nbsp;
+            <button mat-icon-button color="warn" (click)="remove(pollDesc)" matTooltip="{{'COMMON.DELETE' | translate}}"
+              class="remove">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let pollDesc; columns: displayedColumns;">
+        </tr>
+      </table>
+      <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">{{'MESSAGE.NO_DATA' | translate}}</p>
+    </div>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </mat-tab>
+
+
+  <mat-tab label="{{'COMMON.DETAILS' | translate}}" *ngIf="poll">
+    <form name="form" (ngSubmit)="f.form.valid && save()" #f="ngForm" validate>
+
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+          <button mat-icon-button color="primary" (click)="clear()" type="button"
+            matTooltip="{{'COMMON.ADD' | translate}}" class="remove">
+            <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+          </button>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="75" fxFlex.lg="75" fxFlex.xl="75" class="p-3">
+          <div class="text-center mt-2">
+            <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center" type="submit">
+              <span class="mx-1 uppercase">{{'COMMON.SAVE' | translate}}</span>
+              <mat-icon>save</mat-icon>
+            </button>
+          </div>
+          <div class="text-center mt-2" *ngIf="messages">
+            <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+          </div>
+          <div *ngFor="let flag of appService.flags; let i = index">
+            <mat-error *ngIf="f.submitted && (poll.pollDescs[i].description === undefined 
+                  || poll.pollDescs[i].description === '')" severity="error">
+              {{'COMMON.DESCRIPTION' | translate }} {{'VALIDATION.IS_REQUIRED' | translate }} - {{flag.name}}
+            </mat-error>
+          </div>
+        </div>
+      </div>
+
+
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+          <mat-form-field class="w-100">
+            <mat-label> {{'COMMON.POLL_TYPE' | translate}}</mat-label><br />
+            <mat-select placeholder="{{'COMMON.POLL_TYPE' | translate }}" id="pollType" [compareWith]="compareObjects"
+              name="pollType" [(ngModel)]="poll.pollType" #pollType="ngModel" required>
+              <mat-option *ngFor="let ptd of pollTypes" [value]="ptd.pollType">
+                {{ptd.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="f.submitted && pollType.invalid" severity="error">
+              {{'VALIDATION.FIELD_REQUIRED' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="25" class="p-3"></div>
+        <div fxFlex="100" fxFlex.gt-sm="25" class="p-3">
+          <mat-label> {{'COMMON.STATUS' | translate}}: </mat-label><br />
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [(ngModel)]="poll.status"
+            (change)="onToggleGroupChange($event)">
+            <mat-button-toggle [value]="0">
+              {{'COMMON.INACTIVE' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="1">
+              {{'COMMON.ACTIVE' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="2">
+              {{'COMMON.CLOSE' | translate}}
+            </mat-button-toggle>
+            <mat-button-toggle [value]="5">
+              {{'COMMON.TERMINATE' | translate}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let flag of appService.flags; let i = index" (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{'COMMON.CLICK_HERE_FOR' | translate}} - {{flag.name}}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'COMMON.TITLE' | translate}}</mat-label>
+              <input matInput type="text" class="form-control" id="title{{i}}" [(ngModel)]="poll.pollDescs[i].title"
+                name="title{{i}}" required>
+            </mat-form-field>
+            <div fxFlex="5"></div>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-label> {{'COMMON.BEGIN_NOTE' | translate}}</mat-label>
+            <quill-editor class="form-control" id="beginNote{{i}}" [(ngModel)]="poll.pollDescs[i].description"
+              name="beginNote{{i}}" required></quill-editor>
+          </div>
+          <br />
+          <div fxLayout="row wrap">
+            <mat-label> {{'COMMON.END_NOTE' | translate}}</mat-label>
+            <quill-editor class="form-control" id="endNote{{i}}" [(ngModel)]="poll.pollDescs[i].endNote"
+              name="endNote{{i}}" required></quill-editor>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-tab>
+
+  <mat-tab label="{{'COMMON.QUESTIONS' | translate}}" *ngIf="poll && poll.id > 0">
+    <app-pollquestion-component></app-pollquestion-component>
+  </mat-tab>
+
+
+</mat-tab-group>

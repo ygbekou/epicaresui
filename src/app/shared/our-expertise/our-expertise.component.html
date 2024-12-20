@@ -1,0 +1,43 @@
+<div class="section mt-3" *ngIf="section.id>0">
+    <div class="px-3">
+        <div class="theme-container">
+            <h1 class="section-title">{{section.title}}</h1>
+            <div style="text-align: justify; align-content: justify;" [innerHTML]="section.summary | safehtml"></div>
+
+            <div fxFlex="100" fxFlex.gt-md="100" style="height: 500px;" fxShow="false" fxShow.gt-md>
+                <img [src]="'assets/images/sections/'+section.id+'/'+section.picture" alt="expertise"
+                    class="mw-100 d-block">
+            </div>
+            <mat-card class="p-0" fxLayout="row wrap">
+                <!--
+                <div fxLayout="row wrap" class="services-wrapper">
+                    <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="50" class="p-2" *ngFor="let item of sectionItems">
+                        <a [routerLink]="['/section', item.name]" style="text-decoration: none;">
+                            <mat-card fxLayout="column" fxLayoutAlign="start center" class="h-100 w-100 text-center">
+                                <mat-icon class="mat-icon-xlg" color="primary">{{item.picture}}</mat-icon>
+                                <h2 class="capitalize fw-600 my-3">{{item.title}}</h2>
+                                <div [innerHTML]="item.summary"></div>
+                            </mat-card>
+                        </a>
+                    </div>
+                </div>
+                -->
+
+                <div fxFlex="100" fxFlex.gt-md="100" class="p-3">
+
+                    <div fxLayout="row wrap">
+                        <div fxFlex="100" fxFlex.gt-xs="50" class="p-2 text-center" *ngFor="let item of sectionItems">
+                            <a [routerLink]="['/section', item.name]"
+                                style="text-decoration: none!important;color: inherit!important;">
+                                <mat-icon color="primary" class="mat-icon-xlg">{{item.picture}}</mat-icon>
+                                <h2 class="capitalize fw-600 my-2">{{item.title}}</h2>
+                                <div [innerHTML]="item.summary | safehtml"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card>
+        </div>
+    </div>
+</div>

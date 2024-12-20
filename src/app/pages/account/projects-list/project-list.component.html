@@ -1,0 +1,71 @@
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}"
+        autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+    <a [routerLink]="['/account/project', 0]" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+      <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+    </a>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> N<sup>o</sup> </th>
+      <td mat-cell *matCellDef="let pd"> {{pd.project.id|number:'3.0'}} </td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}} </th>
+      <td mat-cell *matCellDef="let pd"><a [routerLink]="['/projects', pd.project.id ]"
+          class="property-name">{{pd.title}}</a></td>
+    </ng-container>
+
+    <!-- budget Column -->
+    <ng-container matColumnDef="budget">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.BUDGET' | translate}} </th>
+      <td mat-cell *matCellDef="let pd"> {{pd.project.budget}} </td>
+    </ng-container>
+
+    <!-- Projected Start Date Column -->
+    <ng-container matColumnDef="owner">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.AUTHOR' | translate}} </th>
+      <td mat-cell *matCellDef="let pd">
+        {{pd.project.user? (pd.project.user.firstName  +' '+ pd.project.user.lastName):'' }} </td>
+    </ng-container>
+
+    <!-- Start Date Column -->
+    <ng-container matColumnDef="createDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.SUBMITTED_DATE' | translate}} </th>
+      <td mat-cell *matCellDef="let pd"> {{pd.project.createDate |date:'longDate'}} </td>
+    </ng-container>
+
+    <!-- Projected End Date Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.STATUS' | translate}} </th>
+      <td mat-cell *matCellDef="let pd">
+
+        <span *ngIf="pd.project.status === 0" style="color: #ff0000;">{{'COMMON.SUBMITTED'|translate}}</span>
+        <span *ngIf="pd.project.status === 1" style="color: #283593;">{{'COMMON.IN_REVIEW'|translate}}</span>
+        <span *ngIf="pd.project.status === 5" style="color: green;">{{'COMMON.APPROVED'|translate}}</span>
+        <span *ngIf="pd.project.status === 10" style="color: green;">{{'COMMON.IN_PROGRESS'|translate}}</span>
+        <span *ngIf="pd.project.status === 90" style="color: green;">{{'COMMON.COMPLETED'|translate}}</span>
+        <span *ngIf="pd.project.status === 99" style="color: red;">{{'COMMON.REJECTED'|translate}}</span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let pd; columns: displayedColumns;" [routerLink]="['/account/project', pd.project.id]">
+    </tr>
+
+  </table>
+  <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">{{'MESSAGE.NO_DATA' | translate}}</p>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>

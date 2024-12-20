@@ -1,0 +1,63 @@
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.FILTER_CMESSAGE' | translate}}" autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+    <a [routerLink]="['/account/cmessage', 0]" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD_NEW' | translate}}">
+      <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+    </a>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+    
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let cmessage"> {{cmessage.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.NAME' | translate}} </th>
+      <td mat-cell *matCellDef="let cmessage"> {{cmessage.name}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.EMAIL' | translate}} </th>
+      <td mat-cell *matCellDef="let cmessage">{{cmessage.email}}</td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.PHONE' | translate}} </th>
+      <td mat-cell *matCellDef="let cmessage">{{cmessage.phone}}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let cmessage">
+        <a [routerLink]="['/account/cmessage', cmessage.id]" mat-icon-button color="primary"
+          matTooltip="{{'COMMON.EDIT' | translate}}">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <button mat-icon-button color="warn" (click)="remove(faq)" 
+          matTooltip="{{'COMMON.DELETE' | translate}}" class="remove">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let faq; columns: displayedColumns;">
+    </tr>
+  </table>
+  <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">No data available</p>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>

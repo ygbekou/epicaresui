@@ -1,0 +1,66 @@
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="90" class="p-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'COMMON.SEARCH' | translate}}" autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="10" class="p-3">
+    <a [routerLink]="['/account/sections', 0]" mat-icon-button color="primary" matTooltip="{{'COMMON.ADD' | translate}}">
+      <mat-icon color="primary" class="mat-icon-xlg">add_circle</mat-icon>
+    </a>
+  </div>
+</div>
+<div class="text-center mt-2" *ngIf="messages">
+  <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+</div>
+
+<div class="table-wrapper">
+  <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let slider"> {{slider.id}} </td>
+    </ng-container>
+
+    <!-- Image Column -->
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef> Image </th>
+      <td mat-cell *matCellDef="let slider"><img [src]="'assets/images/sliders/'+slider.id+'/'+slider.picture"
+          [style.width.px]="50" class="d-block"></td>
+    </ng-container>
+
+     <!-- Rank Column -->
+    <ng-container matColumnDef="rank">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.RANK' | translate}} </th>
+      <td mat-cell *matCellDef="let slider"> {{slider.rank}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.NAME' | translate}} </th>
+      <td mat-cell *matCellDef="let slider"> {{slider.name}} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let slider">
+        <a [routerLink]="['/account/sliders', slider.id]" mat-icon-button color="primary" matTooltip="{{'COMMON.EDIT' | translate}}">
+          <mat-icon>edit</mat-icon>
+        </a>
+        &nbsp;&nbsp;
+        <!-- <button mat-icon-button color="warn" (click)="remove(section)" matTooltip="{{'COMMON.DELETE' | translate}}" class="remove">
+          <mat-icon>delete</mat-icon>
+        </button> -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let section; columns: displayedColumns;">
+    </tr>
+  </table>
+  <p *ngIf="dataSource?.data.length === 0" class="py-5 mb-0 text-center">{{'MESSAGE.NO_DATA' | translate}}</p>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>

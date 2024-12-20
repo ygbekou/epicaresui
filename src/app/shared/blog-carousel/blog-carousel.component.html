@@ -1,0 +1,16 @@
+<div class="agents-carousel">
+    <div class="swiper-container h-100 carousel-outer" [swiper]="config">
+        <div class="swiper-wrapper h-100">
+
+             <div *ngFor="let property of featuredBlogs" class="swiper-slide">
+                <app-blog-item-small [news]="property" [viewType]="'grid'"></app-blog-item-small>                 
+            </div>
+        </div>
+        <button mat-mini-fab color="primary" class="swiper-button-prev swipe-arrow">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" class="swiper-button-next swipe-arrow">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+</div>

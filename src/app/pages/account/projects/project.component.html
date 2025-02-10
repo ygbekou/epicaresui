@@ -166,8 +166,8 @@
       <mat-tab label="{{'COMMON.PICTURE' | translate}}">
         <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
           <p class="mb-0"><span class="uppercase fw-500">{{'COMMON.PICTURE' | translate}}</span><span
-              class="text-muted mx-3">(max: 8 images)</span></p>
-          <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="8" fileAccept="image/*"
+              class="text-muted mx-3">(max: 20 images)</span></p>
+          <input-file [(ngModel)]="files" name="gallery" #gallery="ngModel" fileLimit="20" fileAccept="image/*"
             [linkEnabled]="false" multiple>
           </input-file>
         </div>

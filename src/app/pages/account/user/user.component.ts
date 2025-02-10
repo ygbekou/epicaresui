@@ -154,6 +154,11 @@ export class UserComponent extends BaseComponent implements OnInit {
       }
     }
 
+    for (const userDesc of this.user.userDescs) {
+      userDesc.user = new User();
+      userDesc.user.id = this.user.id;
+    }
+
     this.appService.saveWithFile(this.user, 'User', this.formData, 'saveWithFile')
       .subscribe(data => {
         this.processResult(data, this.user, null)

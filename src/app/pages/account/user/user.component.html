@@ -176,7 +176,7 @@
           <div fxLayout="row wrap">
             <mat-label> {{'COMMON.SHORT_RESUME' | translate}}</mat-label>
             <quill-editor matInput type="text" class="form-control" id="shortResume{{i}}"
-              [(ngModel)]="user.userDescs[i].shortResume" name="shortResume{{i}}" #shortResume="ngModel" required>
+              [(ngModel)]="user.userDescs[i].shortResume" name="shortResume{{i}}" #shortResume="ngModel">
             </quill-editor>
           </div>
           <br/>

@@ -1,6 +1,7 @@
 <div class="theme-container">
+
   <mat-horizontal-stepper [linear]="true" *ngIf="action === 'processing'" #stepper>
-    <mat-step completed="false" *ngIf="projectId === 0" >
+    <mat-step completed="false">
       <ng-template matStepLabel>{{'COMMON.PROJECT'|translate}}</ng-template>
       <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
         <mat-form-field appearance="outline" class="w-100">
@@ -47,15 +48,15 @@
             <mat-label>{{'COMMON.CURRENCY' | translate}}</mat-label>
             <mat-select placeholder="{{'COMMON.SELECT' | translate}}" [compareWith]="compareObjects" id="currency"
               name="currency" [(ngModel)]="transaction.currencyCode">
-          <!--    <mat-option [value]="'USD'">
+              <mat-option [value]="'USD'">
                 USD
-              </mat-option>   -->
+              </mat-option>
               <mat-option [value]="'XOF'">
                 CFA
               </mat-option>
-          <!--    <mat-option [value]="'EUR'">
+              <mat-option [value]="'EUR'">
                 EUR
-              </mat-option>   -->
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>

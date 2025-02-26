@@ -139,11 +139,11 @@
 						</span>
 
 						<div id="main-carousel" class="swiper-container" [swiper]="config"
-							(indexChange)="onIndexChange($event)" style="height: 500px; width: 100%;" >
+							(indexChange)="onIndexChange($event)" style="height: 500px;">
 							<div class="swiper-wrapper">
 								<div *ngFor="let image of project?.fileNames" class="swiper-slide" style="width:80% !important;">
 									<img [attr.data-src]="'assets/images/projects/' + project.id + '/'+image"
-										class="swiper-lazy" style="width: 100% !important;">
+										class="swiper-lazy">
 									<div class="swiper-lazy-preloader"></div>
 								</div>
 							</div>

@@ -52,8 +52,9 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   ngOnInit() {
     console.log('I am here ...')
     this.activatedRoute.params.subscribe(params => {
-     this.projectId = params.projectId;
-      
+      if (params.projectId !== 0) {
+        this.projectId = params.projectId;
+      }
     });
     this.getActiveProjects();
   }

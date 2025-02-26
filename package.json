@@ -23,8 +23,6 @@
     "@angular/platform-browser": "9.1.2",
     "@angular/platform-browser-dynamic": "9.1.2",
     "@angular/router": "9.1.2",
-    "@ngx-gallery/core": "^5.0.0-beta.0",
-    "@ngx-gallery/lightbox": "^5.0.0-beta.0",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^4.0.0",
     "mat-video": "2.8.0",

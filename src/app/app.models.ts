@@ -50,7 +50,6 @@ export class Pagination {
 
 
 export class BaseModel {
-  remainingFileNames: string[] = [];
   lang: string;
 }
 
@@ -88,7 +87,6 @@ export class User extends BaseModel {
   mobilePhone: string;
   address: string;
   city: string;
-  videos: Video[];
   country: string;
   zipCode: string;
   companyName: string;

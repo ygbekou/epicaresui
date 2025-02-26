@@ -35,7 +35,7 @@ export class SubmitResumeComponent extends BaseComponent implements OnInit {
 
   formData: FormData;
   files: any[];
-  user: User = new User();
+  user: User = new User(); 
   picture: any;
   news: any;
   done = false;

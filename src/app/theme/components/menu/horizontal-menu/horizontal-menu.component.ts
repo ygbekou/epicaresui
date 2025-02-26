@@ -58,7 +58,7 @@ export class HorizontalMenuComponent implements OnInit {
         this.menuItems.push(new Menu(50, 'Contact', '/contact', null, null, false, 0));
 
         if (this.appService.company.displayMenuCareer) {
-          this.menuItems.push(new Menu(55, this.lang === 'fr' ? 'Carrière' : 'Careers', '/careers', null, null, false, 0));
+          this.menuItems.push(new Menu(55, this.lang === 'fr' ? 'Carriï¿½re' : 'Careers', '/careers', null, null, false, 0));
         }
 
         if (this.appService.company.displayMenuPoll) {
@@ -71,6 +71,9 @@ export class HorizontalMenuComponent implements OnInit {
 
         if (this.appService.company.displayMenuEvent) {
           this.menuItems.push(new Menu(70, this.lang === 'fr' ? 'Evenements' : 'Events', '/events', null, null, false, 0));
+        }
+        if (this.appService.company.displayMenuEvent) {
+          this.menuItems.push(new Menu(75, this.lang === 'fr' ? 'Galeries' : 'Galeries', '/gals', null, null, false, 0));
         }
 
         // this.menuItems.push(new Menu(60, 'FAQ', '/faq', null, null, false, 0));

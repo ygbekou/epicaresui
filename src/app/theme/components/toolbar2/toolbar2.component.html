@@ -7,8 +7,12 @@
       <div fxLayout="row" fxLayoutAlign="start center" fxShow="false" fxShow.xs class="bg-primary right-section px-2">
         <app-social-icons fxLayout="row" fxLayoutAlign="start center"></app-social-icons>
       </div>
+      <div >
+        <a mat-raised-button routerLink="/payment/0/0" color="warn"
+        class="w-100">{{'COMMON.DONATE' | translate }}</a>
+      </div>
+      <div style="padding: 100px;"></div> 
       <div fxLayout="row" fxLayoutAlign="end center" class="bg-primary right-section" ngClass.xs="w-100">
-
         <div *ngIf="appService.company.displayLangMenu"><app-lang></app-lang></div>
         <app-user-menu></app-user-menu>
       </div>

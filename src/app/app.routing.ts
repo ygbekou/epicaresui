@@ -16,6 +16,9 @@ export const routes: Routes = [
             { path: 'contact', loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule) },
             { path: 'blogs', loadChildren: () => import('./pages/blogs/blogs.module').then(m => m.BlogsModule) },
             { path: 'projects', loadChildren: () => import('./pages/projects/projects.module').then(m => m.ProjectsModule) },
+            { path: 'gals', loadChildren: () => import('./pages/galery/galery.module').then(m => m.GaleryModule) },
+
+
             {
                 path: 'project-assoc/:id', loadChildren: () => import('./pages/assoProject/project-assoc.module')
                     .then(m => m.ProjectAssocModule)

@@ -10,6 +10,10 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
 import { AgmCoreModule } from '@agm/core';
 import { EmbedVideo } from 'ngx-embed-video';
 import { InputFileConfig, InputFileModule } from 'ngx-input-file';
+//import { AppComponent } from './app.component';
+import { GalleryModule } from '@ngx-gallery/core';
+import { LightboxModule } from '@ngx-gallery/lightbox';
+
 const config: InputFileConfig = {
   fileAccept: '*'
 };
@@ -76,6 +80,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FormsModule,
     HttpClientModule,
     ChartsModule,
+    GalleryModule,   // Module de la galerie
+    LightboxModule, 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA1rF9bttCxRmsNdZYjW7FzIoyrul5jb-s',
       libraries: ['places']

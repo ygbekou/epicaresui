@@ -119,6 +119,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/@ngx-gallery/core/styles/gallery.css",
               "src/styles.scss"
             ],
             "scripts": []

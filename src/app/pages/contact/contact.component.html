@@ -10,7 +10,7 @@
     <div class="theme-container">
         <mat-card class="main-content-header mb-5">
             
-            <div fxLayout="row wrap" fxLayoutAlign="space-around">
+            <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="MessageSent == false">
                 <div fxFlex="100" fxFlex.gt-xs="33.3">
                     <div fxLayout="column" fxLayoutAlign="center center" class="text-center">
                         <mat-icon color="primary" class="mat-icon-lg">home</mat-icon>
@@ -65,14 +65,19 @@
                         </mat-form-field>
                     </div> 
                     <div class="w-100 py-2 text-center">
-                        <div class="text-center mt-2" *ngIf="messages">
-                            <p><a mat-button color="accent" class="w-100">{{messages}}</a></p>
+                        <div class="text-center mt-2" *ngIf="error">
+                            <p><a mat-button color="accent" class="w-100">{{error}}</a></p>
                         </div>
                         <button mat-raised-button color="primary" type="submit" class="uppercase">{{'MESSAGE.SEND_MESSAGE'|translate}}</button>
                     </div> 
                 </form> 
             
             </div> 
+    
+            <div *ngIf="MessageSent == true">
+                <p style="color: green; font-size: 2rem">✅ {{'MESSAGE.MESSAGE_SENT'|translate}}</p>
+
+            </div>
             
            <!--  <div class="mt-5 contact-map">
                 <agm-map [latitude]="45.4765" [longitude]="-75.7013" [zoom]="zoom" [mapTypeControl]="true" [fullscreenControl]="true">

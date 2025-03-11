@@ -25,6 +25,10 @@ export class ContactComponent extends BaseComponent implements OnInit {
     super(translate, tokenStorage);
   }
 
+  MessageSent: boolean = false;
+  error: String ;
+
+
   ngOnInit() {
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -46,12 +50,25 @@ export class ContactComponent extends BaseComponent implements OnInit {
       cmessage.lang = this.getLang();
 
       this.appService.saveWithUrl('/service/ContactUsMessage/save', cmessage)
-        .subscribe(data => {
+      	.subscribe(
+          data => {
           this.processResult(data, cmessage, null);
           if (data.errors === null || data.errors.length === 0) {
-            this.contactForm.reset();
-          }
-        });
+              this.MessageSent = true;
+              this.error = ''; // Réinitialiser l'erreur en cas de succès
+              this.contactForm.reset();
+            } else {
+              this.MessageSent = false;
+              this.translate.get('MESSAGE.MESSAGE_FAILED').subscribe(res => {
+                this.error = res + '<br/>' + data.errors[0];
+              });
+            }
+          }, error => {
+            this.MessageSent = false;
+            this.translate.get(['MESSAGE.MESSAGE_FAILED', 'MESSAGE.GENERAL_ERROR']).subscribe(res => {
+              this.error = res['MESSAGE.MESSAGE_FAILED'] + ' ' + res['MESSAGE.GENERAL_ERROR'];
+            });
+          });
     }
   }
 

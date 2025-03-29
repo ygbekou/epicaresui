@@ -38,6 +38,8 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
   action = 'processing';
 
+  enableSpinner = false;
+
 
   constructor(public appService: AppService,
     public appSettings: AppSettings,
@@ -126,6 +128,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   }
 
   handleCardSave(event) {
+    this.enableSpinner = true;
     event.preventDefault();
     document.getElementById('submit').setAttribute('disabled', 'disabled');
     this.submitPayment(this.data.stripe, this.data.card, this.data.clientSecret, this.translate,
@@ -148,6 +151,10 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
             myResult.messages = res['MESSAGE.CARD_PAYMENT_FAILED'];
           });
           document.getElementById('submit').setAttribute('disabled', 'disabled');
+
+          setTimeout(() => {
+            this.enableSpinner = false;
+          }, 2000);
         } else {
           // The payment succeeded!
           // orderComplete(result.paymentIntent.id);
@@ -185,9 +192,12 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     myResult.errors = undefined;
     myResult.messages = undefined;
 
-    transaction.modifiedBy = +userId;
-    transaction.user = new User();
-    transaction.user.id = +userId;
+    if (userId) {
+      transaction.user = new User();
+      transaction.modifiedBy = +userId;
+      transaction.user.id = +userId;
+    }
+
     transaction.io = 0;
 
     appService.save(transaction, 'Transaction')
@@ -196,11 +206,17 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
           translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
             myResult.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
           });
+
         } else {
           translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
             myResult.messages = res['MESSAGE.CARD_PAYMENT_FAILED'];
           });
         }
+
+        setTimeout(() => {
+          this.enableSpinner = false;
+        }, 2000);
+
       });
   }
 

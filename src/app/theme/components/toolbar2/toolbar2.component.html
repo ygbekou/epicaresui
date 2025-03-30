@@ -7,10 +7,25 @@
       <div fxLayout="row" fxLayoutAlign="start center" fxShow="false" fxShow.xs class="bg-primary right-section px-2">
         <app-social-icons fxLayout="row" fxLayoutAlign="start center"></app-social-icons>
       </div>
-      <div fxLayout="row" fxLayoutAlign="end center" class="bg-primary right-section" ngClass.xs="w-100">
-
-        <div *ngIf="appService.company.displayLangMenu"><app-lang></app-lang></div>
-        <app-user-menu></app-user-menu>
+      
+      <div fxLayout="row" ngClass.xs="w-100"fxLayoutAlign.gt-sm="space-between center" >
+        <div style="display: none;" fxFlex="auto">
+          <a mat-raised-button [ngClass]="{ 'green-button': isGreen }" routerLink="/payment/0/0" color="warn"
+          class="w-100">{{'COMMON.DONATE' | translate }}</a>
+        </div>
+        <div style="margin-right: 200px;">
+          
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="end center" fxFlex="auto">
+          <div *ngIf="appService.company.displayLangMenu" class="bg-primary">
+            <app-lang></app-lang>
+          </div>
+          <div class="bg-primary">
+            <app-user-menu></app-user-menu>
+          </div>
+        </div>
+        
       </div>
     </div>
   </mat-toolbar-row>
@@ -33,10 +48,13 @@
       <app-horizontal-menu [menuParentId]="0"></app-horizontal-menu>
     </div>
     <div>
-      <iframe
-        src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.bidamaservices.com&width=150&layout=button_count&action=like&size=small&share=true&height=20&appId"
-        width="150" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-        allowTransparency="true" allow="encrypted-media"></iframe>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://epicares.org/#/" 
+        target="_blank" 
+        style="display: inline-block; background-color: #1877F2; color: white; 
+                font-size: 16px; font-weight: bold; padding: 10px 20px; 
+                border-radius: 5px; text-decoration: none;">
+          Partager
+      </a>
     </div>
   </div>
 </mat-toolbar>

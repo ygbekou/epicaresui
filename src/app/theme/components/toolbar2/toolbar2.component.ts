@@ -11,6 +11,8 @@ export class Toolbar2Component implements OnInit {
 
   ngOnInit() { }
 
+  isGreen: boolean = true;
+
   public sidenavToggle(){
     this.onMenuIconClick.emit();
   }

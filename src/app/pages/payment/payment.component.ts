@@ -27,8 +27,10 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   filteredProjectOptions: ProjectDesc[];
 
   stripe;
-  errors: string;
+  public errors: string = '';
   data: any;
+  public messages: string = '';
+  public transactionSuccess: boolean = false;
 
   @Input()
   projectId: number;
@@ -53,6 +55,9 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
   ngOnInit() {
     console.log('I am here ...')
+    console.log("Messages:", this.messages);
+    console.log("Erreurs:", this.errors);
+
     this.activatedRoute.params.subscribe(params => {
       if (params.projectId !== 0) {
         this.projectId = params.projectId;
@@ -143,29 +148,27 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
           card
         }
       })
-      .then(function (result) {
+      .then((result) => {
         if (result.error) {
-          // Show error to your customer
-          // showError(result.error.message);
-          translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
-            myResult.messages = res['MESSAGE.CARD_PAYMENT_FAILED'];
+          this.translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
+            this.errors = res['MESSAGE.CARD_PAYMENT_FAILED'];
           });
           document.getElementById('submit').setAttribute('disabled', 'disabled');
-
+      
           setTimeout(() => {
             this.enableSpinner = false;
           }, 2000);
         } else {
-          // The payment succeeded!
-          // orderComplete(result.paymentIntent.id);
-          translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
-            myResult.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
+          this.translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
+            this.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
           });
-          saveFct(appService, transaction, userId, translate, myResult);
+          saveFct(appService, transaction, userId, this.translate, this.result);
         }
-        myStepper.selected.completed = true;
-        myStepper.next();
+        this.action = 'complete';
+        this.myStepper.selected.completed = true;
+        this.myStepper.next();
       });
+      
   }
 
   public getActiveProjects() {
@@ -189,9 +192,6 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
   save(appService, transaction, userId, translate, myResult) {
 
-    myResult.errors = undefined;
-    myResult.messages = undefined;
-
     if (userId) {
       transaction.user = new User();
       transaction.modifiedBy = +userId;
@@ -199,17 +199,18 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     }
 
     transaction.io = 0;
+    transaction.project = null;
 
     appService.save(transaction, 'Transaction')
       .subscribe(result => {
         if (result.errors === null || result.errors.length === 0) {
           translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
-            myResult.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
+          // this.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
           });
 
         } else {
-          translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
-            myResult.messages = res['MESSAGE.CARD_PAYMENT_FAILED'];
+         translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
+          //  this.errors = res['MESSAGE.CARD_PAYMENT_FAILED'];
           });
         }
 
@@ -243,7 +244,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     this.myStepper.selected.completed = true;
     this.myStepper.next();
 
-    if (this.myStepper.selectedIndex === 2) {
+    if (this.myStepper.selectedIndex === 1) {
       this.createPaymentIntent();
     }
   }
@@ -271,6 +272,22 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
         this.myStepper.selected.completed = true;
         this.myStepper.next();
       });
+
+      console.log("Messages:", this.messages);
+      console.log("Erreurs:", this.errors);
+
   }
 
+  onPaymentMethodChange(method: string) {
+    if (method === 'TMONEY') {
+      this.transaction.phone = 'Envoyez aujourd\'hui votre don à EPIC CARE sur le +22871769337';
+    } else if (method === 'FLOOZ') {
+      this.transaction.phone = 'Envoyez aujourd\'hui votre don à EPIC CARE sur le +22879807690';
+    } else {
+      this.transaction.phone = '';
+    }
+  }
+  
 }
+
+

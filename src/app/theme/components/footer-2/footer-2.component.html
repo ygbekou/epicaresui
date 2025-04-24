@@ -45,12 +45,17 @@
                                 *ngIf="location.name!==loc.name" style="text-align: left;;padding: 0px;">
                                 <mat-icon color="accent">location_on</mat-icon>
                                 {{loc.name}}
-                            </a>
-                            <a mat-button (click)="location=loc" color="primary" class="w-100 text-left"
+                            </a> 
+                           <!-- <a mat-button (click)="location=loc" color="primary" class="w-100 text-left"
                                 *ngIf="location.name===loc.name" style="text-align: left;;padding: 0px;">
                                 <mat-icon color="primary">location_on</mat-icon>
                                 {{loc.name}}
-                            </a>
+                            </a> -->
+                        </p>
+                      <!--  <div style="text-align: left; align-content: left;" [innerHTML]="location.address"></div> -->
+                        <p fxLayout="row" fxLayoutAlign="start center" class="mt-1">
+                            <mat-icon color="primary">call</mat-icon>
+                            <span class="mx-2">{{location.telephone}}</span>
                         </p>
                     </div>
 
@@ -60,10 +65,9 @@
                             <mat-icon color="primary">location_on</mat-icon>
                             {{location.name}}
                         </a>
-                        <div style="text-align: left; align-content: left;" [innerHTML]="location.address"></div>
                         <p fxLayout="row" fxLayoutAlign="start center" class="mt-1">
-                            <mat-icon color="primary">call</mat-icon>
-                            <span class="mx-2">{{location.telephone}}</span>
+                            <mat-icon color="primary">mail_outline</mat-icon>
+                            <span class="mx-2">{{appService.company.email}}</span>
                         </p>
                     </div>
 

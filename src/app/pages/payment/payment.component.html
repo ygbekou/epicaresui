@@ -1,7 +1,7 @@
 <div class="theme-container">
 
   <mat-horizontal-stepper [linear]="true" *ngIf="action === 'processing'" #stepper>
-    <mat-step completed="false">
+    <!--<mat-step completed="false">
       <ng-template matStepLabel>{{'COMMON.PROJECT'|translate}}</ng-template>
       <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
         <mat-form-field appearance="outline" class="w-100">
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-    </mat-step>
+    </mat-step> -->
     <mat-step completed="false">
       <ng-template matStepLabel>{{'COMMON.AMOUNT'|translate}}</ng-template>
       <div fxLayout="row wrap">
@@ -74,7 +74,7 @@
     <mat-step>
       <ng-template matStepLabel>{{'COMMON.PAY'|translate}}</ng-template>
 
-      <mat-radio-group [(ngModel)]="transaction.paymentMethod">
+      <mat-radio-group [(ngModel)]="transaction.paymentMethod" (change)="onPaymentMethodChange($event.value)">
         <mat-radio-button value="CARD" *ngIf="appService.company.acceptCardPayment" style="margin-right: 50px;">
           {{'COMMON.CREDIT_CARD'|translate}}
         </mat-radio-button>
@@ -109,7 +109,7 @@
         <mat-form-field appearance="outline" class="w-100">
           <mat-label> {{'COMMON.PHONE' | translate}}</mat-label>
           <input matInput type="text" class="form-control" id="phone" [(ngModel)]="transaction.phone" name="phone"
-            #phone="ngModel" required>
+            #phone="ngModel" readonly>
           <mat-error *ngIf="phone.invalid" severity="error">
             {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
           </mat-error>
@@ -160,7 +160,7 @@
       </mat-error>
 
       <mat-error *ngIf="messages" severity="message">
-        <h3>{{ messages }}</h3>
+        <h3 style="color: green; font-size: 1.5rem">{{ messages }}</h3>
       </mat-error>
   </div>
 

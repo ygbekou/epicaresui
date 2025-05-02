@@ -186,7 +186,6 @@
     "MENU_LIST": "Eléments du Menu",
     "MEMBER_SPACE": "Espace Membre",
     "MESSAGE": "Message",
-    "TMONEY": "Envoyez aujourd'hui votre don à EPIC CARE sur le +22871769337",
     "MESSAGE_FOR_US": "Votre message pour nous",
     "MESSAGES": "Messages",
     "META_DESCRIPTION": "Description méta",
@@ -375,7 +374,8 @@
     "SEND_EMAIL": "Envoyez email",
     "TERMINATE": "Terminé",
     "USE_COMPANY_CONTACT": "Utiliser les contacts de la compagnie",
-    "OTHERS": "Autres"
+    "OTHERS": "Autres",
+    "PAYMENT_PAGE_TITLE": "FAIRE UN DON"
   },
   "MESSAGE": {
     "ALREADY_SUSCRIBED": "Vous avez déjà souscrit à notre blogs",
@@ -439,7 +439,9 @@
     "PAYGATE2": "Votre paiement est en cours de traitement. Assurez-vous d'avoir accepté la vérification.",
     "PAYGATE4": "Votre paiement a expir�. Essayer plus tard.",
     "PAYGATE6": "Votre paiement a �t� annul�. Veuillez contacter votre fournisseur pour toute autre question.",
-    "NO_RECENT_PROJECT_FOUND": "Aucun récent projet trouvé."
+    "NO_RECENT_PROJECT_FOUND": "Aucun récent projet trouvé.",
+    "TMONEY": "Envoyez aujourd'hui votre don à EPIC CARE par TMoney sur le +22871769337",
+    "FLOOZ": "Envoyez aujourd'hui votre don à EPIC CARE par Flooz sur le +22879807690"
   },
   "VALIDATION": {
     "IS_INVALID": "est invalide",

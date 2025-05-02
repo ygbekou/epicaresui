@@ -7,6 +7,7 @@ import { BaseComponent } from 'src/app/shared/baseComponent';
 import { TokenStorage } from 'src/app/token.storage';
 import { ActivatedRoute } from '@angular/router';
 import { MatStepper } from '@angular/material/stepper';
+import { Title } from '@angular/platform-browser';
 
 declare var Stripe: any;
 
@@ -47,6 +48,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     public appSettings: AppSettings,
     protected translate: TranslateService,
     protected tokenStorage: TokenStorage,
+    private titleService: Title,
     private activatedRoute: ActivatedRoute) {
 
     super(translate, tokenStorage);
@@ -54,6 +56,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   }
 
   ngOnInit() {
+    this.titleService.setTitle('Paiement sécurisé - MonApplication');
     console.log('I am here ...')
     console.log("Messages:", this.messages);
     console.log("Erreurs:", this.errors);
@@ -67,9 +70,11 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   }
 
   ngAfterViewInit() {
+
     setTimeout(() => {
       this.setStripeSecret();
     }, 500);
+    
 
     this.transaction.currencyCode = 'USD';
   }
@@ -78,6 +83,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     this.appService.getObject('/service/Payment/stripe-key').toPromise()
       .then(result => {
         this.stripe = Stripe(result.publishableKey);
+        this.setupElements({});
       });
   }
 
@@ -87,7 +93,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
       .then(result => {
         return result;
       })
-      .then(data => {
+     /*  .then(data => {
         return this.setupElements(data);
       })
       .then(data => {
@@ -97,7 +103,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', this.handleCardSave.bind(this));
-      });
+      });*/
   }
 
   setupElements(data) {
@@ -125,11 +131,17 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     const element = document.getElementById('card-element')
     card.mount('#card-element');
 
-    return {
+    data = {
       stripe: this.stripe,
       card,
       clientSecret: data.clientSecret
     };
+    this.data = data;
+        document.querySelector('button').disabled = false;
+        document.getElementById('submit').removeAttribute('disabled');
+
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', this.handleCardSave.bind(this));
   }
 
   handleCardSave(event) {
@@ -142,14 +154,22 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
   submitPayment(stripe, card, clientSecret, translate, myResult, myStepper, saveFct, appService, transaction, userId, processResult) {
     this.errors = '';
-    stripe
-      .confirmCardPayment(clientSecret, {
+    this.appService.saveWithUrl('/service/Payment/clientSecret', this.transaction).toPromise()
+      .then(result => {
+        return result;
+      })
+      /*  .then(data => {
+        return this.setupElements(data);
+      })*/
+      .then (data => stripe
+      .confirmCardPayment(data.clientSecret, {
         payment_method: {
           card
         }
-      })
+      }))
       .then((result) => {
         if (result.error) {
+          this.paymentCompleted = false;
           this.translate.get(['MESSAGE.CARD_PAYMENT_FAILED']).subscribe(res => {
             this.errors = res['MESSAGE.CARD_PAYMENT_FAILED'];
           });
@@ -159,6 +179,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
             this.enableSpinner = false;
           }, 2000);
         } else {
+          this.paymentCompleted = true;
           this.translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
             this.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
           });
@@ -244,10 +265,12 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     this.myStepper.selected.completed = true;
     this.myStepper.next();
 
-    if (this.myStepper.selectedIndex === 1) {
-      this.createPaymentIntent();
+    if (this.myStepper.selectedIndex === 0) {
+    // this.createPaymentIntent();
     }
   }
+
+  paymentCompleted = false;
 
   saveTransaction() {
 
@@ -262,10 +285,12 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
         if (data.errors === null || data.errors.length === 0) {
           this.translate.get(['MESSAGE.CARD_PAYMENT_SUCCEDED']).subscribe(res => {
             this.messages = res['MESSAGE.CARD_PAYMENT_SUCCEDED'];
+            console.log("Messages:", this.messages);
           });
         } else {
           this.translate.get(['MESSAGE.CARD_PAYMENT_FAILED', 'MESSAGE.' + data.errors[0]]).subscribe(res => {
             this.errors = res['MESSAGE.' + data.errors[0]];
+            console.log("Erreurs:", this.errors);
           });
         }
         this.action = 'complete';
@@ -273,20 +298,22 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
         this.myStepper.next();
       });
 
-      console.log("Messages:", this.messages);
-      console.log("Erreurs:", this.errors);
-
   }
 
   onPaymentMethodChange(method: string) {
     if (method === 'TMONEY') {
-      this.transaction.phone = 'Envoyez aujourd\'hui votre don à EPIC CARE sur le +22871769337';
+      this.translate.get('MESSAGE.TMONEY').subscribe(res => {
+        this.transaction.phone = res; // Message pour TMONEY
+      });
     } else if (method === 'FLOOZ') {
-      this.transaction.phone = 'Envoyez aujourd\'hui votre don à EPIC CARE sur le +22879807690';
+      this.translate.get('MESSAGE.FLOOZ').subscribe(res => {
+        this.transaction.phone = res; // Message pour FLOOZ
+      });
     } else {
       this.transaction.phone = '';
     }
   }
+  
   
 }
 

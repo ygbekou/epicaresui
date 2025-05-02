@@ -272,7 +272,6 @@
     "SUCCESS": "Success",
     "SUMMARY": "Summary",
     "SUSCRIBE": "Suscribe",
-    "TMONEY": "Send your donation to EPIC CARE today on +22871769337",
     "SUSCRIBE_TO_BLOG": "Suscribe to our blog",
     "TEMP_CODE": "Temporary Code",
     "TEMPLATE": "Template",
@@ -376,7 +375,8 @@
     "LEADERSHIP": "Leadership",
     "TERMINATE": "Terminate",
     "USE_COMPANY_CONTACT": "Use company contact",
-    "OTHERS": "Others"
+    "OTHERS": "Others",
+    "PAYMENT_PAGE_TITLE": "DONATE"
   },
   "MESSAGE": {
     "ALREADY_SUSCRIBED": "You have already suscribed to our blogs",
@@ -440,7 +440,9 @@
     "PAYGATE2": "Your payment is still processing. Please make sure you have accepted the payment verification sent to your phone.",
     "PAYGATE4": "Your payment expired. Please try again.",
     "PAYGATE6": "Your payment was cancelled. Please contact your provider for further question.",
-    "NO_RECENT_PROJECT_FOUND": "No recent project found."
+    "NO_RECENT_PROJECT_FOUND": "No recent project found.",
+    "TMONEY": "Send your donation today to EPIC CARE by TMoney on +22871769337",
+    "FLOOZ": "Send your donation today to EPIC CARE by Flooz on +22879807690"
   },
   "VALIDATION": {
     "IS_INVALID": "is invalid",

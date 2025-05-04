@@ -21,7 +21,7 @@
     "CONNECT_TO_SUBMIT": "Pour soumettre un projet, vous devez vous connecter",
     "CURRENCY": "Devise",
     "PAY_ONLINE": "Payer en ligne",
-    "CREDIT_CARD": "Carte de crédit",
+    "CREDIT_CARD": "Carte de crédit/débit",
     "ABOUT_US": "A propos de nous",
     "SUBMIT_PROJECT": "Soumettez votre project",
     "ACCOUNT": "Compte",
@@ -375,7 +375,8 @@
     "TERMINATE": "Terminé",
     "USE_COMPANY_CONTACT": "Utiliser les contacts de la compagnie",
     "OTHERS": "Autres",
-    "PAYMENT_PAGE_TITLE": "FAIRE UN DON"
+    "PAYMENT_PAGE_TITLE": "FAIRE UN DON",
+    "SELECT_PAYMENT_METHOD": "Choisir la méthode de payment"
   },
   "MESSAGE": {
     "ALREADY_SUSCRIBED": "Vous avez déjà souscrit à notre blogs",
@@ -440,8 +441,8 @@
     "PAYGATE4": "Votre paiement a expir�. Essayer plus tard.",
     "PAYGATE6": "Votre paiement a �t� annul�. Veuillez contacter votre fournisseur pour toute autre question.",
     "NO_RECENT_PROJECT_FOUND": "Aucun récent projet trouvé.",
-    "TMONEY": "Envoyez aujourd'hui votre don à EPIC CARE par TMoney sur le +22871769337",
-    "FLOOZ": "Envoyez aujourd'hui votre don à EPIC CARE par Flooz sur le +22879807690"
+    "TMONEY": "Envoyez aujourd'hui votre don à EPIC CARE par TMoney sur le +228 71769337",
+    "FLOOZ": "Envoyez aujourd'hui votre don à EPIC CARE par Flooz sur le +228 79807690"
   },
   "VALIDATION": {
     "IS_INVALID": "est invalide",
@@ -454,7 +455,7 @@
     "MESSAGE_REQUIRED": "Message requis",
     "EMAIL_REQUIRED": "E-mail requis",
     "NAME_REQUIRED": "Le nom est requis",
-    "EMAIL_USED": "Cet E-mail est déjàutilisé",
+    "EMAIL_USED": "Cet E-mail est déjà utilisé",
     "PASSWORD_REQUIRED": "Mot de passe requis",
     "USER_NAME_REQUIRED": "Nom d'utilisateur requis",
     "USER_TYPE_REQUIRED": "Type d'utilisateur requis",

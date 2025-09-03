@@ -331,7 +331,7 @@
     "ANONYM": "Anonym",
     "CURRENCY": "Currency",
     "PAY_ONLINE": "Pay Online",
-    "CREDIT_CARD": "Credit Card",
+    "CREDIT_CARD": "Credit/Debit Card",
     "CAREER_BANNER_TITLE": "Career Banner Title",
     "CAREER_BANNER_TEXT": "Career Banner Text",
     "POSTED": "Posted",
@@ -376,7 +376,8 @@
     "TERMINATE": "Terminate",
     "USE_COMPANY_CONTACT": "Use company contact",
     "OTHERS": "Others",
-    "PAYMENT_PAGE_TITLE": "DONATE"
+    "PAYMENT_PAGE_TITLE": "DONATE",
+    "SELECT_PAYMENT_METHOD": "Select payment method"
   },
   "MESSAGE": {
     "ALREADY_SUSCRIBED": "You have already suscribed to our blogs",
@@ -441,8 +442,8 @@
     "PAYGATE4": "Your payment expired. Please try again.",
     "PAYGATE6": "Your payment was cancelled. Please contact your provider for further question.",
     "NO_RECENT_PROJECT_FOUND": "No recent project found.",
-    "TMONEY": "Send your donation today to EPIC CARE by TMoney on +22871769337",
-    "FLOOZ": "Send your donation today to EPIC CARE by Flooz on +22879807690"
+    "TMONEY": "Send your donation today to EPIC CARE by TMoney on +228 71769337",
+    "FLOOZ": "Send your donation today to EPIC CARE by Flooz on +228 79807690"
   },
   "VALIDATION": {
     "IS_INVALID": "is invalid",

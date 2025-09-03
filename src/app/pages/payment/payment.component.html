@@ -1,99 +1,117 @@
-<div class="theme-container">
-  <h2 style="text-align: center;margin-top: 50px;margin-bottom: 20px;">{{ 'COMMON.PAYMENT_PAGE_TITLE' | translate }}</h2>
-  <mat-radio-group [(ngModel)]="transaction.paymentMethod" (change)="onPaymentMethodChange($event.value)">
-    <mat-radio-button value="CARD" *ngIf="appService.company.acceptCardPayment" style="margin-right: 50px;">
-      {{'COMMON.CREDIT_CARD'|translate}}
-    </mat-radio-button>
-    <mat-radio-button value="TMONEY" *ngIf="appService.company.acceptTmoneyPayment" style="margin-right: 50px;">
-      TMoney
-    </mat-radio-button>
-    <mat-radio-button value="FLOOZ" *ngIf="appService.company.acceptFloozPayment" style="margin-right: 50px;">
-      Flooz
-    </mat-radio-button>
-  </mat-radio-group>
-  <br />
-  <br />
-  <div [hidden]="transaction.paymentMethod !== 'TMONEY' && transaction.paymentMethod !== 'FLOOZ'">
-    <p style="color: green; font-size: 1.5rem">{{ transaction.phone }}</p>
+<div class="section">
+  <div class="px-3">
+    <div class="theme-container">
+      <h1 class="section-title">{{'COMMON.PAYMENT_PAGE_TITLE' | translate}}</h1>
 
-    <div fxLayout="row wrap">
-      <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
-        <div class="text-center mt-2">
-          <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center"
-            (click)="saveTransaction()">
-          <!--  <span class="mx-1 uppercase">{{'COMMON.PAY' | translate}}</span> -->
-          </button>
+      <h3>
+        <mat-label> {{'COMMON.SELECT_PAYMENT_METHOD' | translate}}</mat-label>
+      </h3><br />
+      <mat-radio-group [(ngModel)]="transaction.paymentMethod" (change)="onPaymentMethodChange($event.value)">
+        <mat-radio-button value="CARD" *ngIf="appService.company.acceptCardPayment" style="margin-right: 50px;">
+          {{'COMMON.CREDIT_CARD'|translate}}
+        </mat-radio-button>
+        <mat-radio-button value="TMONEY" *ngIf="appService.company.acceptTmoneyPayment" style="margin-right: 50px;">
+          TMoney
+        </mat-radio-button>
+        <mat-radio-button value="FLOOZ" *ngIf="appService.company.acceptFloozPayment" style="margin-right: 50px;">
+          Flooz
+        </mat-radio-button>
+      </mat-radio-group>
+      <br />
+      <br />
+      <div *ngIf="transaction.paymentMethod === 'TMONEY' || transaction.paymentMethod === 'FLOOZ'">
+        <p style="color: green; font-size: 1.5rem">{{ transaction.phone }}</p>
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-sm="100" class="p-3">
+            <div class="text-center mt-2">
+              <button mat-raised-button color="primary" fxLayout="row" fxLayoutAlign="center center"
+                (click)="saveTransaction()">
+                <!--  <span class="mx-1 uppercase">{{'COMMON.PAY' | translate}}</span> -->
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div fxLayout="row wrap" *ngIf="action === 'complete'" style="height: 100px;">
+        <mat-error *ngIf="errors" severity="error">
+          <h3>{{ errors }}</h3>
+        </mat-error>
+
+        <mat-error *ngIf="messages" severity="message">
+          <h3 style="color: green; font-size: 1.5rem">{{ messages }}</h3>
+        </mat-error>
+      </div>
+
+      <div>
+        <div [hidden]="transaction.paymentMethod !== 'CARD' || paymentCompleted === true">
+
+          <form id="payment-form">
+            <div fxLayout="row wrap">
+              <div fxFlex="100" fxFlex.gt-sm="50" class="p-1">
+                <div id="card-element">
+                  <!--Stripe.js injects the Card Element-->
+                </div>
+              </div>
+            </div>
+            <br />
+            <ng-template matStepLabel>{{'COMMON.AMOUNT'|translate}}</ng-template>
+            <div fxLayout="row wrap">
+              <div fxFlex="100" fxFlex.gt-sm="50" class="p-1">
+                <div fxFlex="100" class="p-1">
+                  <div fxFlex="100" fxFlex.gt-sm="50" class="p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label> {{'COMMON.AMOUNT' | translate}}</mat-label>
+                      <input matInput type="text" class="form-control" id="amount" [(ngModel)]="transaction.amount"
+                        name="amount" #amount="ngModel" required>
+                      <mat-error *ngIf="amount.invalid" severity="error">
+                        {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-sm="50" class="p-1">
+                    <mat-form-field appearance="outline" class="w-100 mb-3">
+                      <mat-label>{{'COMMON.CURRENCY' | translate}}</mat-label>
+                      <mat-select placeholder="{{'COMMON.SELECT' | translate}}" [compareWith]="compareObjects"
+                        id="currency" name="currency" [(ngModel)]="transaction.currencyCode">
+                        <mat-option [value]="'USD'">
+                          USD
+                        </mat-option>
+                        <mat-option [value]="'XOF'">
+                          CFA
+                        </mat-option>
+                        <mat-option [value]="'EUR'">
+                          EUR
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+
+              </div>
+            </div>
+
+            <div fxLayout="row wrap">
+              <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
+                <!--  <button mat-raised-button color="secondary" (click)="goBack()" type="button">Back</button> -->
+              </div>
+
+
+            </div>
+            <button id="submit" mat-raised-button color="primary">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">{{'COMMON.DONATE'|translate}}</span>
+              <!-- <mat-icon>save</mat-icon> -->
+              <span id="order-amount"></span>
+            </button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
-  
-  <div fxLayout="row wrap" *ngIf="action === 'complete'" style="height: 100px;">
-    <mat-error *ngIf="errors" severity="error">
-        <h3>{{ errors }}</h3>
-      </mat-error>
-
-      <mat-error *ngIf="messages" severity="message">
-        <h3 style="color: green; font-size: 1.5rem">{{ messages }}</h3>
-      </mat-error>
-  </div>
-
-  <div *ngIf="paymentCompleted === false">
-    <div [hidden]="transaction.paymentMethod !== 'CARD'">
-      
-      <form id="payment-form">
-        <div id="card-element">
-          <!--Stripe.js injects the Card Element-->
-        </div>
-        <br />
-        <br />
-        <ng-template matStepLabel>{{'COMMON.AMOUNT'|translate}}</ng-template>
-        <div fxLayout="row wrap">
-          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label> {{'COMMON.AMOUNT' | translate}}</mat-label>
-              <input matInput type="text" class="form-control" id="amount" [(ngModel)]="transaction.amount" name="amount"
-                #amount="ngModel" required>
-              <mat-error *ngIf="amount.invalid" severity="error">
-                {{ 'VALIDATION.FIELD_REQUIRED' | translate }}
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
-            <mat-form-field appearance="outline" class="w-100 mb-3">
-              <mat-label>{{'COMMON.CURRENCY' | translate}}</mat-label>
-              <mat-select placeholder="{{'COMMON.SELECT' | translate}}" [compareWith]="compareObjects" id="currency"
-                name="currency" [(ngModel)]="transaction.currencyCode">
-                <mat-option [value]="'USD'">
-                  USD
-                </mat-option>
-                <mat-option [value]="'XOF'">
-                  CFA
-                </mat-option>
-                <mat-option [value]="'EUR'">
-                  EUR
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        
-        <div fxLayout="row wrap">
-          <div fxFlex="100" fxFlex.gt-sm="50" class="p-3">
-          <!--  <button mat-raised-button color="secondary" (click)="goBack()" type="button">Back</button> -->
-          </div>
-          
-
-        </div>
-        <button id="submit" mat-raised-button color="primary">
-          <div class="spinner hidden" id="spinner"></div>
-          <span id="button-text">{{'COMMON.DONATE'|translate}}</span>
-          <!-- <mat-icon>save</mat-icon> -->
-          <span id="order-amount"></span>
-        </button>
-        {{ paymentCompleted }}
-      </form>
-    </div>
-  </div>
-
 </div>

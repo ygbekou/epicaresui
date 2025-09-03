@@ -83,7 +83,6 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
     this.appService.getObject('/service/Payment/stripe-key').toPromise()
       .then(result => {
         this.stripe = Stripe(result.publishableKey);
-        this.setupElements({});
       });
   }
 
@@ -255,6 +254,8 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
 
   clear() {
     this.transaction = new Transaction();
+    this.errors = '';
+    this.messages = '';
   }
 
   goBack() {
@@ -301,6 +302,9 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
   }
 
   onPaymentMethodChange(method: string) {
+    this.messages = '';
+    this.errors = '';
+    this.paymentCompleted = false;
     if (method === 'TMONEY') {
       this.translate.get('MESSAGE.TMONEY').subscribe(res => {
         this.transaction.phone = res; // Message pour TMONEY
@@ -311,10 +315,10 @@ export class PaymentComponent extends BaseComponent implements OnInit, AfterView
       });
     } else {
       this.transaction.phone = '';
+      this.setupElements({});
     }
   }
-  
-  
+
 }
 
 

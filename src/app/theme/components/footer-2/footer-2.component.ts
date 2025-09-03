@@ -20,6 +20,8 @@ export class Footer2Component extends BaseComponent implements OnInit {
     // @Input('menuParentId') menuParentId;
     public menuItems: Array<Menu> = [];
     location: CompanyLocation = new CompanyLocation();
+    location1: CompanyLocation = new CompanyLocation();
+
     iconSize = 'lg';
     iconColor = '';
     lang = 'fr';
@@ -52,6 +54,8 @@ export class Footer2Component extends BaseComponent implements OnInit {
                 this.locations = data;
                 if (this.locations && this.locations.length > 0) {
                     this.location = this.locations[0];
+                    this.location1 = this.locations[1];
+
                 }
             },
                 error => console.log(error),
@@ -126,7 +130,7 @@ export class Footer2Component extends BaseComponent implements OnInit {
         this.menuItems.push(new Menu(50, 'Contact', '/contact', null, null, false, 0));
 
         if (this.appService.company.displayMenuCareer) {
-          this.menuItems.push(new Menu(55, this.lang === 'fr' ? 'Carrière' : 'Careers', '/careers', null, null, false, 0));
+          this.menuItems.push(new Menu(55, this.lang === 'fr' ? 'Carriï¿½re' : 'Careers', '/careers', null, null, false, 0));
         }
 
         if (this.appService.company.displayMenuPoll) {

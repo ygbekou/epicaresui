@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { emailValidator } from 'src/app/theme/utils/app-validators';
 import { AppService } from 'src/app/app.service';
-import { ContactUsMessage } from 'src/app/app.models';
+import { ContactUsMessage, CompanyLocation } from 'src/app/app.models';
 import { TranslateService } from '@ngx-translate/core';
 import { TokenStorage } from 'src/app/token.storage';
 import { BaseComponent } from 'src/app/shared/baseComponent';
+
 
 @Component({
   selector: 'app-contact',
@@ -17,7 +18,13 @@ export class ContactComponent extends BaseComponent implements OnInit {
   public lat = 40.678178;
   public lng = -73.944158;
   public zoom = 12;
+  
 
+  locations: CompanyLocation[] = [];
+  location: CompanyLocation = new CompanyLocation();
+  location1: CompanyLocation = new CompanyLocation();
+
+      
   constructor(public appService: AppService,
     public formBuilder: FormBuilder,
     protected translate: TranslateService,
@@ -36,6 +43,22 @@ export class ContactComponent extends BaseComponent implements OnInit {
       phone: [''],
       message: ['', Validators.required]
     });
+
+    const parameters: string[] = [];
+    this.appService.getAllByCriteria('Location', parameters, 'order by e.rank ')
+      .subscribe((data: CompanyLocation[]) => {
+        this.locations = data;
+
+        // Si on a au moins 2 villes, on assigne aux variables
+        if (this.locations.length > 0) {
+          this.location = this.locations[0];
+        }
+        if (this.locations.length > 1) {
+          this.location1 = this.locations[1];
+        }
+      },
+      error => console.log(error),
+      () => console.log('Get locations complete'));
   }
 
   public onContactFormSubmit(values: any): void {
